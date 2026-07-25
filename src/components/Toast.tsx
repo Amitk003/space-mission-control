@@ -16,7 +16,7 @@ export const ToastContainer: React.FC<ToastContainerProps> = ({ toasts, onDismis
   if (toasts.length === 0) return null;
 
   return (
-    <div className="fixed top-4 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none" style={{ right: 'max(1rem, env(safe-area-inset-right, 1rem))' }}>
+    <div aria-live="polite" aria-atomic="false" className="fixed top-4 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none" style={{ right: 'max(1rem, env(safe-area-inset-right, 1rem))' }}>
       {toasts.map((toast) => (
         <ToastItem key={toast.id} toast={toast} onDismiss={onDismiss} />
       ))}
