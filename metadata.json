@@ -1,0 +1,4 @@
+{
+  "name": "Astraea Space Mission Control Simulator",
+  "description": "Browser-Native Autonomous Space Mission Control Simulator with 60Hz Web Worker telemetry, 3D spatial orbit visualization, Web Audio procedural sonification, and IndexedDB time-series analytics."
+}
