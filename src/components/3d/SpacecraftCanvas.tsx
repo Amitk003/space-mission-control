@@ -1,7 +1,7 @@
 import React from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
-import { Globe, Maximize2, Minimize2, Rotate3d } from 'lucide-react';
+import { Globe, Rotate3d } from 'lucide-react';
 import { useMissionStore } from '../../store/useMissionStore';
 import { EarthOrbitScene } from './EarthOrbitScene';
 import { SpacecraftModel } from './SpacecraftModel';

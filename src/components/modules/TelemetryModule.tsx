@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { Activity, BatteryCharging, Flame, LineChart as ChartIcon, Zap } from 'lucide-react';
+import { Activity, Flame, LineChart as ChartIcon, Zap } from 'lucide-react';
 import {
   Area,
   AreaChart,
@@ -14,7 +14,6 @@ import {
   YAxis,
 } from 'recharts';
 import { db } from '../../db';
-import type { TelemetryLogEntry } from '../../types/telemetry';
 
 export const TelemetryModule: React.FC = () => {
   const [timeWindowMin, setTimeWindowMin] = useState<number>(15);

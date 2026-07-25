@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import {
   Activity,
-  CheckCircle2,
   Globe2,
   Radio,
   Send,

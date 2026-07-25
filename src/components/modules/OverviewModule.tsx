@@ -2,11 +2,9 @@ import React, { useCallback, useState } from 'react';
 import {
   Activity,
   AlertOctagon,
-  BatteryCharging,
   Flame,
   Gauge,
   Radio,
-  ShieldAlert,
   Sun,
   Zap,
 } from 'lucide-react';

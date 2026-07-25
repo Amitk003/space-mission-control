@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AlertOctagon, CheckCircle2, Info, X } from 'lucide-react';
 
 export interface ToastMessage {

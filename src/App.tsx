@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Download, HelpCircle, Moon, Sun } from 'lucide-react';
 import { Header } from './components/Header';
 import { CommandConsole } from './components/modules/CommandConsole';
