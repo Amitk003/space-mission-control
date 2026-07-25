@@ -59,9 +59,9 @@ export const ResizableLayout: React.FC = () => {
           <div
             className={`w-full ${
               activeModule === '3D_LAB' ? 'lg:w-full' : 'lg:w-[45%]'
-            } transition-all duration-300 flex flex-col h-[400px] lg:h-auto min-h-[380px]`}
+            } transition-all duration-300 flex flex-col min-h-[50vh] lg:min-h-0`}
             style={
-              activeModule !== '3D_LAB' && show3dInTab && window.innerWidth > 1024
+              activeModule !== '3D_LAB' && show3dInTab
                 ? { width: `${splitRatio}%` }
                 : undefined
             }

@@ -1,9 +1,10 @@
 import React, { useRef, useState } from 'react';
-import { ChevronRight, Terminal } from 'lucide-react';
+import { ChevronDown, ChevronRight, ChevronUp, Terminal } from 'lucide-react';
 import { useMissionStore } from '../../store/useMissionStore';
 
 export const CommandConsole: React.FC = () => {
   const [inputVal, setInputVal] = useState('');
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const debounceRef = useRef<number>(0);
   const { commandLogs, executeCommand, clearFaults } = useMissionStore();
 
@@ -44,37 +45,50 @@ export const CommandConsole: React.FC = () => {
           <Terminal className="w-4 h-4" />
           <span>Astraea-1 Telemetry Bus Terminal</span>
         </div>
-        <span className="text-xs">Baud Rate: 115200 bps</span>
+        <div className="flex items-center gap-2">
+          <span className="text-xs">Baud: 115200 bps</span>
+          <button
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            aria-label={isCollapsed ? 'Expand terminal' : 'Collapse terminal'}
+            className="text-slate-400 hover:text-slate-200 cursor-pointer"
+          >
+            {isCollapsed ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+          </button>
+        </div>
       </div>
 
-      <div className="h-[120px] overflow-y-auto space-y-1 text-xs pr-1 font-mono" aria-live="polite" aria-atomic="false">
-        <p className="text-slate-500">[SYSTEM] Operator Session Initialized. Socket ready.</p>
-        {commandLogs.map((log) => (
-          <p key={log.id} className="text-slate-300">
-            <span className="text-cyan-400">T+{log.metSec}s &gt;</span>{' '}
-            <strong className="text-amber-300">{log.command}:</strong> {log.response || 'Executed'}
-          </p>
-        ))}
-      </div>
+      {!isCollapsed && (
+        <>
+          <div className="h-[120px] overflow-y-auto space-y-1 text-xs pr-1 font-mono" aria-live="polite" aria-atomic="false">
+            <p className="text-slate-500">[SYSTEM] Operator Session Initialized. Socket ready.</p>
+            {commandLogs.map((log) => (
+              <p key={log.id} className="text-slate-300">
+                <span className="text-cyan-400">T+{log.metSec}s &gt;</span>{' '}
+                <strong className="text-amber-300">{log.command}:</strong> {log.response || 'Executed'}
+              </p>
+            ))}
+          </div>
 
-      <form onSubmit={handleSend} className="flex items-center gap-2 pt-2 border-t border-slate-800">
-        <ChevronRight className="w-4 h-4 text-cyan-400" />
-        <label htmlFor="command-input" className="sr-only">Command input</label>
-        <input
-          id="command-input"
-          type="text"
-          value={inputVal}
-          onChange={(e) => setInputVal(e.target.value)}
-          placeholder="Type command..."
-          className="flex-1 bg-transparent text-cyan-200 placeholder-slate-600 focus:outline-none text-xs"
-        />
-        <button
-          type="submit"
-          className="px-2.5 py-1 rounded bg-cyan-950 border border-cyan-700 text-cyan-300 text-[10px] font-bold hover:bg-cyan-900 cursor-pointer"
-        >
-          EXECUTE
-        </button>
-      </form>
+          <form onSubmit={handleSend} className="flex items-center gap-2 pt-2 border-t border-slate-800">
+            <ChevronRight className="w-4 h-4 text-cyan-400 shrink-0" />
+            <label htmlFor="command-input" className="sr-only">Command input</label>
+            <input
+              id="command-input"
+              type="text"
+              value={inputVal}
+              onChange={(e) => setInputVal(e.target.value)}
+              placeholder="Type command..."
+              className="flex-1 bg-transparent text-cyan-200 placeholder-slate-600 focus:outline-none text-xs min-w-0"
+            />
+            <button
+              type="submit"
+              className="px-2.5 py-1 rounded bg-cyan-950 border border-cyan-700 text-cyan-300 text-xs font-bold hover:bg-cyan-900 cursor-pointer shrink-0"
+            >
+              Execute
+            </button>
+          </form>
+        </>
+      )}
     </div>
   );
 };
