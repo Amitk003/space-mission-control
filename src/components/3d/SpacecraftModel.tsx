@@ -302,8 +302,9 @@ export const SpacecraftModel = () => {
          ═══════════════════════════════════════════════════════════ */}
       <Html position={[-3.0, 0.8, 0]} center distanceFactor={12}>
         <button
-          onClick={() => setSelectedComponent('SOLAR_ARRAY_1')}
-          className="px-2 py-0.5 rounded bg-slate-900/90 border border-cyan-500/80 text-[10px] font-mono text-cyan-300 backdrop-blur-sm whitespace-nowrap shadow-lg hover:bg-cyan-950 cursor-pointer pointer-events-auto"
+          onClick={handleClick}
+          data-component="SOLAR_ARRAY_1"
+          className="px-2 py-0.5 rounded bg-[var(--color-bg-card)]/90 border border-[var(--color-accent)]/80 text-[10px] font-mono text-[var(--color-accent)] backdrop-blur-sm whitespace-nowrap shadow-lg hover:bg-[var(--color-accent)]/15 cursor-pointer pointer-events-auto"
         >
           SOLAR WING (-X)
         </button>
@@ -311,8 +312,9 @@ export const SpacecraftModel = () => {
 
       <Html position={[0, 1.8, 0]} center distanceFactor={12}>
         <button
-          onClick={() => setSelectedComponent('HIGH_GAIN_ANTENNA')}
-          className="px-2 py-0.5 rounded bg-slate-900/90 border border-cyan-500/80 text-[10px] font-mono text-cyan-300 backdrop-blur-sm whitespace-nowrap shadow-lg hover:bg-cyan-950 cursor-pointer pointer-events-auto"
+          onClick={handleClick}
+          data-component="HIGH_GAIN_ANTENNA"
+          className="px-2 py-0.5 rounded bg-[var(--color-bg-card)]/90 border border-[var(--color-accent)]/80 text-[10px] font-mono text-[var(--color-accent)] backdrop-blur-sm whitespace-nowrap shadow-lg hover:bg-[var(--color-accent)]/15 cursor-pointer pointer-events-auto"
         >
           HIGH-GAIN DISH
         </button>
@@ -320,8 +322,9 @@ export const SpacecraftModel = () => {
 
       <Html position={[0, -1.5, 0]} center distanceFactor={12}>
         <button
-          onClick={() => setSelectedComponent('PAYLOAD_OPTICS')}
-          className="px-2 py-0.5 rounded bg-slate-900/90 border border-emerald-500/80 text-[10px] font-mono text-emerald-300 backdrop-blur-sm whitespace-nowrap shadow-lg hover:bg-emerald-950 cursor-pointer pointer-events-auto"
+          onClick={handleClick}
+          data-component="PAYLOAD_OPTICS"
+          className="px-2 py-0.5 rounded bg-[var(--color-bg-card)]/90 border border-emerald-500/80 text-[10px] font-mono text-emerald-300 backdrop-blur-sm whitespace-nowrap shadow-lg hover:bg-emerald-950/80 cursor-pointer pointer-events-auto"
         >
           HYPERSPECTRAL CAM
         </button>
@@ -329,8 +332,9 @@ export const SpacecraftModel = () => {
 
       <Html position={[0.9, -0.9, 1.3]} center distanceFactor={12}>
         <button
-          onClick={() => setSelectedComponent('RCS_THRUSTERS')}
-          className="px-2 py-0.5 rounded bg-slate-900/90 border border-rose-500/80 text-[10px] font-mono text-rose-300 backdrop-blur-sm whitespace-nowrap shadow-lg hover:bg-rose-950 cursor-pointer pointer-events-auto"
+          onClick={handleClick}
+          data-component="RCS_THRUSTERS"
+          className="px-2 py-0.5 rounded bg-[var(--color-bg-card)]/90 border border-rose-500/80 text-[10px] font-mono text-rose-300 backdrop-blur-sm whitespace-nowrap shadow-lg hover:bg-rose-950/80 cursor-pointer pointer-events-auto"
         >
           RCS THRUSTERS
         </button>
