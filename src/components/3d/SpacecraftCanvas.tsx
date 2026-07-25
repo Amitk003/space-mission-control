@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { Globe, Rotate3d } from 'lucide-react';
 import { useMissionStore } from '../../store/useMissionStore';
 import { EarthOrbitScene } from './EarthOrbitScene';
 import { SpacecraftModel } from './SpacecraftModel';
+
+/* ─── Loading Fallback ─── */
+const CanvasLoader: React.FC = () => (
+  <div className="absolute inset-0 flex items-center justify-center">
+    <div className="flex flex-col items-center gap-3">
+      <div className="w-8 h-8 border-2 border-[var(--color-accent)] border-t-transparent rounded-full animate-spin" />
+      <span className="text-xs font-mono text-[var(--color-text-muted)]">Loading 3D scene...</span>
+    </div>
+  </div>
+);
 
 export const SpacecraftCanvas: React.FC = () => {
   const {
@@ -21,7 +31,7 @@ export const SpacecraftCanvas: React.FC = () => {
 
   return (
     <div
-      className="relative w-full h-full min-h-[360px] bg-[#050811] rounded-xl border border-[var(--color-accent)]/40 overflow-hidden flex flex-col group"
+      className="relative w-full h-full min-h-[360px] bg-[#020612] rounded-xl border border-[var(--color-accent)]/40 overflow-hidden flex flex-col group"
       onMouseEnter={() => setIsOverUI(true)}
       onMouseLeave={() => setIsOverUI(false)}
     >
@@ -58,7 +68,7 @@ export const SpacecraftCanvas: React.FC = () => {
 
         {/* Selected Component Indicator */}
         {selectedComponent && (
-          <div className="flex items-center gap-2 bg-[var(--color-bg-card)]/90 border border-[var(--color-accent)]/80 px-3 py-1 rounded text-xs text-[var(--color-accent)] backdrop-blur-md animate-fade-in">
+          <div className="flex items-center gap-2 bg-[var(--color-bg-card)]/90 border border-[var(--color-accent)]/80 px-3 py-1 rounded text-xs text-[var(--color-accent)] backdrop-blur-md">
             <span className="text-[var(--color-text-muted)]">FOCUS:</span>
             <span className="font-bold text-white">{selectedComponent.replace(/_/g, ' ')}</span>
             <button
@@ -73,31 +83,50 @@ export const SpacecraftCanvas: React.FC = () => {
       </div>
 
       {/* 3D WebGL Canvas */}
-      <Canvas
-        camera={{
-          position: spatialViewMode === 'SPACECRAFT' ? [0, 2, 7] : [0, 4, 10],
-          fov: 45,
-        }}
-        gl={{ antialias: true }}
-      >
-        <ambientLight intensity={inEclipse ? 0.15 : 0.4} />
-        <directionalLight
-          position={inEclipse ? [-10, -5, -10] : [10, 10, 10]}
-          intensity={inEclipse ? 0.2 : 2.2}
-          color={inEclipse ? '#38bdf8' : '#ffffff'}
-        />
-        <pointLight position={[-10, -10, -10]} intensity={0.5} color="#0284c7" />
+      <Suspense fallback={<CanvasLoader />}>
+        <Canvas
+          camera={{
+            position: spatialViewMode === 'SPACECRAFT' ? [0, 2, 7] : [0, 4, 10],
+            fov: 45,
+          }}
+          gl={{
+            antialias: true,
+            toneMapping: 3, // ACESFilmicToneMapping
+            toneMappingExposure: 1.2,
+          }}
+        >
+          {/* Space environment lighting - harsh single sun source */}
+          <ambientLight intensity={inEclipse ? 0.05 : 0.15} />
+          <directionalLight
+            position={inEclipse ? [-10, -5, -10] : [8, 6, 10]}
+            intensity={inEclipse ? 0.3 : 2.5}
+            color={inEclipse ? '#4488cc' : '#ffffff'}
 
-        {spatialViewMode === 'SPACECRAFT' ? <SpacecraftModel /> : <EarthOrbitScene />}
+          />
+          {/* Subtle fill from opposite side */}
+          <directionalLight
+            position={[-5, -3, -5]}
+            intensity={0.08}
+            color="#1e3a5f"
+          />
+          {/* Rim light for depth */}
+          <pointLight position={[0, 8, -5]} intensity={0.4} color="#0ea5e9" distance={20} />
 
-        <OrbitControls
-          enablePan={true}
-          enableZoom={true}
-          enableRotate={true}
-          minDistance={2.5}
-          maxDistance={25}
-        />
-      </Canvas>
+          {/* Scene content */}
+          {spatialViewMode === 'SPACECRAFT' ? <SpacecraftModel /> : <EarthOrbitScene />}
+
+          {/* Orbit controls */}
+          <OrbitControls
+            enablePan={true}
+            enableZoom={true}
+            enableRotate={true}
+            minDistance={2.0}
+            maxDistance={30}
+            enableDamping
+            dampingFactor={0.05}
+          />
+        </Canvas>
+      </Suspense>
 
       {/* Viewport Bottom Status Bar */}
       <div className="absolute bottom-3 left-3 right-3 z-10 flex items-center justify-between text-xs text-[var(--color-text-muted)] bg-[var(--color-bg-base)]/80 px-3 py-1.5 rounded-lg border border-[var(--color-border-subtle)]/80 backdrop-blur-md pointer-events-none">
