@@ -63,6 +63,13 @@ export const Header: React.FC = () => {
                     : 'bg-[var(--color-danger)] shadow-[0_0_16px_var(--color-danger)]'
                 }`}
               />
+              <span className={`ml-1.5 text-[10px] font-bold uppercase ${
+                masterAlert === 'NOMINAL'
+                  ? 'text-[var(--color-success)]'
+                  : masterAlert === 'WARNING'
+                  ? 'text-[var(--color-warning)]'
+                  : 'text-[var(--color-danger)]'
+              }`}>{masterAlert}</span>
             </div>
             <div>
               <h1 className="text-base font-bold tracking-wider text-[var(--color-accent)] flex items-center gap-1.5">

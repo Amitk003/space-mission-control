@@ -16,7 +16,7 @@ export const ToastContainer: React.FC<ToastContainerProps> = ({ toasts, onDismis
   if (toasts.length === 0) return null;
 
   return (
-    <div className="fixed top-4 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none">
+    <div className="fixed top-4 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none" style={{ right: 'max(1rem, env(safe-area-inset-right, 1rem))' }}>
       {toasts.map((toast) => (
         <ToastItem key={toast.id} toast={toast} onDismiss={onDismiss} />
       ))}
@@ -32,10 +32,10 @@ const iconMap = {
 };
 
 const colorMap = {
-  info: 'border-cyan-700 bg-cyan-950/90 text-cyan-300',
-  success: 'border-emerald-700 bg-emerald-950/90 text-emerald-300',
-  warning: 'border-amber-700 bg-amber-950/90 text-amber-300',
-  error: 'border-rose-700 bg-rose-950/90 text-rose-300',
+  info: 'border-[var(--color-accent)]/70 bg-[var(--color-accent)]/15 text-[var(--color-accent)]',
+  success: 'border-[var(--color-success)]/70 bg-[var(--color-success)]/15 text-[var(--color-success)]',
+  warning: 'border-[var(--color-warning)]/70 bg-[var(--color-warning)]/15 text-[var(--color-warning)]',
+  error: 'border-[var(--color-danger)]/70 bg-[var(--color-danger)]/15 text-[var(--color-danger)]',
 };
 
 const ToastItem: React.FC<{ toast: ToastMessage; onDismiss: (id: string) => void }> = ({ toast, onDismiss }) => {

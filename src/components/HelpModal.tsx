@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { Keyboard, X } from 'lucide-react';
 
 interface HelpModalProps {
@@ -7,14 +7,41 @@ interface HelpModalProps {
 }
 
 export const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
+  const modalRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
   useEffect(() => {
     if (!isOpen) return;
+    closeButtonRef.current?.focus();
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
     };
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
   }, [isOpen, onClose]);
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key !== 'Tab') return;
+    const modal = modalRef.current;
+    if (!modal) return;
+    const focusable = modal.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusable.length === 0) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey) {
+      if (document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      }
+    } else {
+      if (document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  }, []);
 
   if (!isOpen) return null;
 
@@ -36,8 +63,13 @@ export const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
       onClick={onClose}
     >
       <div
+        ref={modalRef}
         className="bg-[var(--color-bg-card)] border border-[var(--color-border-default)] rounded-xl p-6 max-w-md w-full mx-4 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
+        onKeyDown={handleKeyDown}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Keyboard shortcuts"
       >
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2 text-[var(--color-accent)]">
@@ -45,6 +77,7 @@ export const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
             <h2 className="text-sm font-bold">Keyboard Shortcuts</h2>
           </div>
           <button
+            ref={closeButtonRef}
             onClick={onClose}
             aria-label="Close help dialog"
             className="text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] cursor-pointer"

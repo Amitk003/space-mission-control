@@ -56,6 +56,9 @@ class SpacecraftSimulator {
   private historyBuffer: TelemetryLogEntry[] = [];
   private lastBatchTime: number = Date.now();
 
+  // Undo history
+  private undoStack: { command: string; snapshot: Record<string, unknown> }[] = [];
+
   constructor() {
     this.setupListeners();
   }
@@ -75,6 +78,9 @@ class SpacecraftSimulator {
           break;
         case 'EXECUTE_COMMAND':
           this.handleCommand(msg.command, msg.args);
+          break;
+        case 'UNDO_LAST_COMMAND':
+          this.handleUndo();
           break;
         case 'INJECT_FAULT':
           this.faults.set(msg.subsystem, msg.severity);
@@ -118,6 +124,57 @@ class SpacecraftSimulator {
     }
   }
 
+  private saveSnapshot(cmd: string) {
+    this.undoStack.push({
+      command: cmd,
+      snapshot: {
+        fuelMassKg: this.fuelMassKg,
+        fuelTankPressurePsi: this.fuelTankPressurePsi,
+        arrayStatus: this.arrayStatus,
+        adcsMode: this.adcsMode,
+        heater1Active: this.heater1Active,
+        heater2Active: this.heater2Active,
+        cameraBufferGb: this.cameraBufferGb,
+        imagesCaptured: this.imagesCaptured,
+        faults: new Map(this.faults),
+      },
+    });
+    if (this.undoStack.length > 10) this.undoStack.shift();
+  }
+
+  private handleUndo() {
+    const entry = this.undoStack.pop();
+    if (!entry) {
+      this.postCommandResponse('UNDO', 'FAILED', 'Nothing to undo.');
+      return;
+    }
+    const s = entry.snapshot;
+    this.fuelMassKg = s.fuelMassKg as number;
+    this.fuelTankPressurePsi = s.fuelTankPressurePsi as number;
+    this.arrayStatus = s.arrayStatus as 'TRACKING' | 'LOCKED' | 'STOWED';
+    this.adcsMode = s.adcsMode as 'FINE_POINTING' | 'SLEWING' | 'SAFE_MODE' | 'DETUMBLING';
+    this.heater1Active = s.heater1Active as boolean;
+    this.heater2Active = s.heater2Active as boolean;
+    this.cameraBufferGb = s.cameraBufferGb as number;
+    this.imagesCaptured = s.imagesCaptured as number;
+    this.faults = new Map(s.faults as Map<SubsystemType, 'WARNING' | 'CRITICAL'>);
+    this.postCommandResponse('UNDO', 'SUCCESS', `Undone: ${entry.command}`);
+    this.logEvent('COMMAND', 'INFO', undefined, `Undo: ${entry.command}`, `Previous state restored for ${entry.command}.`);
+  }
+
+  private postCommandResponse(cmd: CommandType, status: 'SUCCESS' | 'FAILED' | 'EXECUTING', response: string) {
+    const log: CommandLog = {
+      id: `CMD-${Date.now().toString(36).toUpperCase()}`,
+      timestamp: Date.now(),
+      metSec: Math.floor(this.metSec),
+      command: cmd,
+      status,
+      response,
+    };
+    const msg: WorkerToMainMessage = { type: 'COMMAND_RESPONSE', payload: log };
+    self.postMessage(msg);
+  }
+
   private handleCommand(cmd: CommandType, _args?: Record<string, unknown>) {
     const log: CommandLog = {
       id: `CMD-${Date.now().toString(36).toUpperCase()}`,
@@ -126,6 +183,8 @@ class SpacecraftSimulator {
       command: cmd,
       status: 'EXECUTING',
     };
+
+    if (cmd !== 'RUN_DIAGNOSTICS') this.saveSnapshot(cmd);
 
     switch (cmd) {
       case 'REALIGN_SOLAR_PANELS':

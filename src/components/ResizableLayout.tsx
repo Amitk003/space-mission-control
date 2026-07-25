@@ -56,7 +56,7 @@ export const ResizableLayout: React.FC = () => {
       <div className="flex-1 min-h-0 flex flex-col lg:flex-row gap-4">
         {(show3dInTab || activeModule === '3D_LAB') && (
           <div
-            className={`w-full transition-all duration-300 flex flex-col min-h-[50vh] lg:min-h-0`}
+            className={`w-full transition-all duration-300 flex flex-col min-h-[50vh] max-h-[70vh] lg:min-h-0 lg:max-h-none`}
             style={
               activeModule !== '3D_LAB' && show3dInTab
                 ? { width: `${splitRatio}%` }

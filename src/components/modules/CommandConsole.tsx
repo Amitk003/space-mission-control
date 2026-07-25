@@ -39,9 +39,9 @@ export const CommandConsole: React.FC = () => {
   };
 
   return (
-    <div className="bg-[#050811] p-3 rounded-xl border border-cyan-900/40 space-y-2 text-xs">
-      <div className="flex items-center justify-between text-slate-400 border-b border-slate-800 pb-2">
-        <div className="flex items-center gap-1.5 font-bold text-cyan-400">
+    <div className="bg-[var(--color-bg-base)] p-3 rounded-xl border border-[var(--color-border-default)] space-y-2 text-xs">
+      <div className="flex items-center justify-between text-[var(--color-text-muted)] border-b border-[var(--color-border-subtle)] pb-2">
+        <div className="flex items-center gap-1.5 font-bold text-[var(--color-accent)]">
           <Terminal className="w-4 h-4" />
           <span>Astraea-1 Telemetry Bus Terminal</span>
         </div>
@@ -50,7 +50,7 @@ export const CommandConsole: React.FC = () => {
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
             aria-label={isCollapsed ? 'Expand terminal' : 'Collapse terminal'}
-            className="text-slate-400 hover:text-slate-200 cursor-pointer"
+            className="text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] cursor-pointer"
           >
             {isCollapsed ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
           </button>
@@ -60,17 +60,17 @@ export const CommandConsole: React.FC = () => {
       {!isCollapsed && (
         <>
           <div className="h-[120px] overflow-y-auto space-y-1 text-xs pr-1 font-mono" aria-live="polite" aria-atomic="false">
-            <p className="text-slate-500">[SYSTEM] Operator Session Initialized. Socket ready.</p>
+            <p className="text-[var(--color-text-muted)]">[SYSTEM] Operator Session Initialized. Socket ready.</p>
             {commandLogs.map((log) => (
-              <p key={log.id} className="text-slate-300">
-                <span className="text-cyan-400">T+{log.metSec}s &gt;</span>{' '}
-                <strong className="text-amber-300">{log.command}:</strong> {log.response || 'Executed'}
+              <p key={log.id} className="text-[var(--color-text-primary)]/80">
+                <span className="text-[var(--color-accent)]">T+{log.metSec}s &gt;</span>{' '}
+                <strong className="text-[var(--color-warning)]">{log.command}:</strong> {log.response || 'Executed'}
               </p>
             ))}
           </div>
 
-          <form onSubmit={handleSend} className="flex items-center gap-2 pt-2 border-t border-slate-800">
-            <ChevronRight className="w-4 h-4 text-cyan-400 shrink-0" />
+          <form onSubmit={handleSend} className="flex items-center gap-2 pt-2 border-t border-[var(--color-border-subtle)]">
+            <ChevronRight className="w-4 h-4 text-[var(--color-accent)] shrink-0" />
             <label htmlFor="command-input" className="sr-only">Command input</label>
             <input
               id="command-input"
@@ -78,11 +78,11 @@ export const CommandConsole: React.FC = () => {
               value={inputVal}
               onChange={(e) => setInputVal(e.target.value)}
               placeholder="Type command..."
-              className="flex-1 bg-transparent text-cyan-200 placeholder-slate-600 focus:outline-none text-xs min-w-0"
+              className="flex-1 bg-transparent text-[var(--color-accent)] placeholder-[var(--color-text-muted)] focus:outline-none text-xs min-w-0"
             />
             <button
               type="submit"
-              className="px-2.5 py-1 rounded bg-cyan-950 border border-cyan-700 text-cyan-300 text-xs font-bold hover:bg-cyan-900 cursor-pointer shrink-0"
+              className="px-2.5 py-1 rounded bg-[var(--color-accent)]/15 border border-[var(--color-accent)]/50 text-[var(--color-accent)] text-xs font-bold hover:bg-[var(--color-accent)]/25 cursor-pointer shrink-0"
             >
               Execute
             </button>

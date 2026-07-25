@@ -182,14 +182,8 @@ export const useMissionStore = create<MissionStoreState>((set, get) => ({
   },
 
   undoLastCommand: () => {
-    const last = commandHistory.pop();
-    if (!last) return;
     if (workerInstance) {
-      const msg: MainToWorkerMessage = {
-        type: 'EXECUTE_COMMAND',
-        command: 'RUN_DIAGNOSTICS',
-        args: { undo: last.command },
-      };
+      const msg: MainToWorkerMessage = { type: 'UNDO_LAST_COMMAND' };
       workerInstance.postMessage(msg);
     }
   },

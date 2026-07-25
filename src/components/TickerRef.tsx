@@ -18,6 +18,11 @@ export const TickerRef: React.FC<TickerRefProps> = ({
   const spanRef = useRef<HTMLSpanElement>(null);
   const lastUpdateRef = useRef<number>(0);
   const cachedValueRef = useRef<string>(fallback);
+  const selectorRef = useRef(selector);
+  const formatRef = useRef(format);
+
+  selectorRef.current = selector;
+  formatRef.current = format;
 
   useEffect(() => {
     const unsubscribe = useMissionStore.subscribe((state) => {
@@ -29,8 +34,8 @@ export const TickerRef: React.FC<TickerRefProps> = ({
       const telemetry = state.telemetry;
       if (telemetry) {
         try {
-          const rawVal = selector(telemetry);
-          const formatted = format(rawVal);
+          const rawVal = selectorRef.current(telemetry);
+          const formatted = formatRef.current(rawVal);
           if (formatted !== cachedValueRef.current) {
             cachedValueRef.current = formatted;
             spanRef.current.textContent = formatted;
@@ -46,7 +51,7 @@ export const TickerRef: React.FC<TickerRefProps> = ({
     return () => {
       unsubscribe();
     };
-  }, [selector, format, fallback]);
+  }, [fallback]);
 
   return <span ref={spanRef} className={`font-mono transition-colors ${className}`}>{fallback}</span>;
 };

@@ -150,7 +150,8 @@ export type CommandType =
   | 'TOGGLE_HEATER'
   | 'TRIGGER_PAYLOAD_CAPTURE'
   | 'ENTER_SAFE_MODE'
-  | 'INJECT_ANOMALY';
+  | 'INJECT_ANOMALY'
+  | 'UNDO';
 
 export interface CommandLog {
   id: string;
@@ -173,4 +174,5 @@ export type MainToWorkerMessage =
   | { type: 'SET_SIM_SPEED'; speed: number }
   | { type: 'EXECUTE_COMMAND'; command: CommandType; args?: Record<string, unknown> }
   | { type: 'INJECT_FAULT'; subsystem: SubsystemType; severity: 'WARNING' | 'CRITICAL' }
-  | { type: 'CLEAR_FAULTS' };
+  | { type: 'CLEAR_FAULTS' }
+  | { type: 'UNDO_LAST_COMMAND' };

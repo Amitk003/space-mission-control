@@ -151,7 +151,7 @@ export const OverviewModule: React.FC = () => {
               className="text-lg font-bold font-mono text-[var(--color-danger)]"
               fallback="118.4"
             />
-            <span className="text-xs text-[var(--color-text-muted)]">C</span>
+            <span className="text-xs text-[var(--color-text-muted)]">°C</span>
           </div>
           <span className="text-[10px] text-[var(--color-text-muted)] mt-1" title="Multi-Layer Insulation thermal shield">MLI Multi-Layer Shield</span>
         </div>
