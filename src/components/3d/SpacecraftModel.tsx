@@ -4,51 +4,37 @@ import { Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { useMissionStore } from '../../store/useMissionStore';
 
-/* ─── MLI Gold Foil Material ─── */
-const useMLIMaterial = (selected: boolean) => {
-  return useMemo(() => {
-    if (selected) {
-      return new THREE.MeshPhysicalMaterial({
-        color: '#00f0ff',
-        metalness: 0.9,
-        roughness: 0.1,
-        emissive: '#00f0ff',
-        emissiveIntensity: 0.3,
-      });
-    }
-    return new THREE.MeshPhysicalMaterial({
-      color: '#c9a84c',
-      metalness: 0.85,
-      roughness: 0.15,
-      clearcoat: 0.4,
-      clearcoatRoughness: 0.2,
-      envMapIntensity: 1.2,
-    });
-  }, [selected]);
-};
+/* ─── MLI Gold Foil props ─── */
+const useMLIProps = (isSelected: boolean) => useMemo(() => isSelected ? {
+  color: '#00f0ff',
+  metalness: 0.9,
+  roughness: 0.1,
+  emissive: '#00f0ff',
+  emissiveIntensity: 0.3,
+} : {
+  color: '#c9a84c',
+  metalness: 0.85,
+  roughness: 0.15,
+  clearcoat: 0.4,
+  clearcoatRoughness: 0.2,
+  envMapIntensity: 1.2,
+}, [isSelected]);
 
-/* ─── Solar Panel Material ─── */
-const useSolarMaterial = (selected: boolean, inEclipse: boolean) => {
-  return useMemo(() => {
-    if (selected) {
-      return new THREE.MeshPhysicalMaterial({
-        color: '#00f0ff',
-        metalness: 0.9,
-        roughness: 0.05,
-        emissive: '#00f0ff',
-        emissiveIntensity: 0.3,
-      });
-    }
-    return new THREE.MeshPhysicalMaterial({
-      color: inEclipse ? '#0a1628' : '#1a3a5c',
-      metalness: 0.95,
-      roughness: 0.05,
-      clearcoat: 0.8,
-      clearcoatRoughness: 0.05,
-      envMapIntensity: 2.0,
-    });
-  }, [selected, inEclipse]);
-};
+/* ─── Solar Panel props ─── */
+const useSolarProps = (isSelected: boolean, inEclipse: boolean) => useMemo(() => isSelected ? {
+  color: '#00f0ff',
+  metalness: 0.9,
+  roughness: 0.05,
+  emissive: '#00f0ff',
+  emissiveIntensity: 0.3,
+} : {
+  color: inEclipse ? '#0a1628' : '#1a3a5c',
+  metalness: 0.95,
+  roughness: 0.05,
+  clearcoat: 0.8,
+  clearcoatRoughness: 0.05,
+  envMapIntensity: 2.0,
+}, [isSelected, inEclipse]);
 
 /* ─── Main Spacecraft Component ─── */
 export const SpacecraftModel = () => {
@@ -60,9 +46,9 @@ export const SpacecraftModel = () => {
   const isEclipse = telemetry?.orbit.inEclipse || false;
   const isSlewing = telemetry?.adcs.mode === 'SLEWING';
 
-  const mliMat = useMLIMaterial(selectedComponent === 'MAIN_BUS');
-  const solarMat1 = useSolarMaterial(selectedComponent === 'SOLAR_ARRAY_1', isEclipse);
-  const solarMat2 = useSolarMaterial(selectedComponent === 'SOLAR_ARRAY_2', isEclipse);
+  const mliProps = useMLIProps(selectedComponent === 'MAIN_BUS');
+  const solarProps1 = useSolarProps(selectedComponent === 'SOLAR_ARRAY_1', isEclipse);
+  const solarProps2 = useSolarProps(selectedComponent === 'SOLAR_ARRAY_2', isEclipse);
 
   // Rotation
   useFrame((_, delta) => {
@@ -89,7 +75,7 @@ export const SpacecraftModel = () => {
         {/* Primary bus structure */}
         <mesh position={[0, 0, 0]}>
           <boxGeometry args={[1.6, 1.6, 2.0]} />
-          <primitive object={mliMat} attach="material" />
+          <meshPhysicalMaterial {...mliProps} />
         </mesh>
 
         {/* Structural reinforcement ribs */}
@@ -115,7 +101,7 @@ export const SpacecraftModel = () => {
         {/* Solar panel surface */}
         <mesh>
           <boxGeometry args={[3.8, 1.2, 0.04]} />
-          <primitive object={solarMat1} attach="material" />
+          <meshPhysicalMaterial {...solarProps1} />
         </mesh>
         {/* Panel cell grid lines */}
         {Array.from({ length: 8 }).map((_, i) => (
@@ -146,7 +132,7 @@ export const SpacecraftModel = () => {
       <group position={[3.0, 0, 0]} onClick={handleClick} data-component="SOLAR_ARRAY_2">
         <mesh>
           <boxGeometry args={[3.8, 1.2, 0.04]} />
-          <primitive object={solarMat2} attach="material" />
+          <meshPhysicalMaterial {...solarProps2} />
         </mesh>
         {Array.from({ length: 8 }).map((_, i) => (
           <mesh key={`cell-r-${i}`} position={[-1.5 + i * 0.42, 0, 0.021]}>
