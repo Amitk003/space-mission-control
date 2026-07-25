@@ -30,11 +30,11 @@ export const Header: React.FC = () => {
   const masterAlert = telemetry?.masterAlertLevel || 'NOMINAL';
 
   const navItems: { id: ViewModule; label: string; icon: React.FC<{ className?: string }> }[] = [
-    { id: 'OVERVIEW', label: 'STATUS OVERVIEW', icon: Layers },
-    { id: 'TELEMETRY', label: 'TELEMETRY CHARTS', icon: Activity },
-    { id: 'COMMS', label: 'COMMS & GROUND', icon: Radio },
-    { id: 'TIMELINE', label: 'TIMELINE & LOGS', icon: HardDrive },
-    { id: '3D_LAB', label: '3D SPATIAL LAB', icon: Globe2 },
+    { id: 'OVERVIEW', label: 'Status Overview', icon: Layers },
+    { id: 'TELEMETRY', label: 'Telemetry Charts', icon: Activity },
+    { id: 'COMMS', label: 'Comms & Ground', icon: Radio },
+    { id: 'TIMELINE', label: 'Timeline & Logs', icon: HardDrive },
+    { id: '3D_LAB', label: '3D Spatial Lab', icon: Globe2 },
   ];
 
   return (
@@ -61,10 +61,10 @@ export const Header: React.FC = () => {
               />
             </div>
             <div>
-              <h1 className="text-base font-bold tracking-wider font-mono text-cyan-400 flex items-center gap-1.5">
-                ASTRAEA-1 <span className="text-xs px-1.5 py-0.5 rounded bg-cyan-950 border border-cyan-800 text-cyan-300">LEO SIM</span>
+              <h1 className="text-base font-bold tracking-wider text-cyan-400 flex items-center gap-1.5">
+                ASTRAEA-1 <span className="text-xs px-1.5 py-0.5 rounded bg-cyan-950 border border-cyan-800 text-cyan-300 font-mono">LEO SIM</span>
               </h1>
-              <p className="text-[10px] text-slate-400 font-mono tracking-tight">
+              <p className="text-xs text-slate-400 tracking-tight">
                 SAT-ID: 2026-088A | NORAD: 58912
               </p>
             </div>
@@ -74,7 +74,7 @@ export const Header: React.FC = () => {
 
           {/* Mission Elapsed Time */}
           <div className="bg-slate-900/80 px-3 py-1 rounded border border-slate-800 flex items-center gap-2">
-            <span className="text-[10px] text-slate-400 font-mono">MET:</span>
+            <span className="text-xs text-slate-400">MET:</span>
             <TickerRef
               selector={(t) => {
                 const totalSec = t.metSec;
@@ -83,17 +83,17 @@ export const Header: React.FC = () => {
                 const secs = totalSec % 60;
                 return `T+${String(hrs).padStart(3, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
               }}
-              className="text-xs text-cyan-300 font-bold"
+              className="text-xs text-cyan-300 font-bold font-mono"
               fallback="T+000:00:00"
             />
           </div>
 
           {/* Orbit Number */}
-          <div className="hidden lg:flex items-center gap-1.5 text-xs text-slate-300 bg-slate-900/50 px-2.5 py-1 rounded border border-slate-800 font-mono">
-            <span className="text-slate-400">ORBIT:</span>
+          <div className="hidden lg:flex items-center gap-1.5 text-xs text-slate-300 bg-slate-900/50 px-2.5 py-1 rounded border border-slate-800">
+            <span className="text-slate-400">Orbit:</span>
             <TickerRef
               selector={(t) => `#${t.orbit.orbitNumber}`}
-              className="text-emerald-400 font-semibold"
+              className="text-emerald-400 font-semibold font-mono"
               fallback="#--"
             />
           </div>
@@ -110,7 +110,7 @@ export const Header: React.FC = () => {
                 onClick={() => setActiveModule(item.id)}
                 aria-label={`${item.label} tab`}
                 aria-current={isActive ? 'page' : undefined}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-mono tracking-wide transition-all whitespace-nowrap cursor-pointer ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs tracking-wide transition-all whitespace-nowrap cursor-pointer ${
                   isActive
                     ? 'bg-cyan-950/90 text-cyan-300 border border-cyan-700/60 shadow-[0_0_10px_rgba(6,182,212,0.15)] font-semibold'
                     : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
@@ -127,12 +127,12 @@ export const Header: React.FC = () => {
         <div className="flex items-center gap-2 w-full md:w-auto justify-end">
           {/* Master Alert Status Badge */}
           <div
-            className={`px-2.5 py-1 rounded border text-[11px] font-mono font-bold flex items-center gap-1.5 ${
+            className={`px-2.5 py-1 rounded border text-xs font-bold flex items-center gap-1.5 ${
               masterAlert === 'NOMINAL'
                 ? 'bg-emerald-950/60 border-emerald-800 text-emerald-400'
                 : masterAlert === 'WARNING'
                 ? 'bg-amber-950/80 border-amber-800 text-amber-300'
-                : 'bg-rose-950/90 border-rose-800 text-rose-300 animate-pulse'
+                : 'bg-rose-950/90 border-rose-800 text-rose-300'
             }`}
           >
             {masterAlert === 'NOMINAL' ? (
@@ -153,7 +153,7 @@ export const Header: React.FC = () => {
                 onClick={() => setSimSpeed(s)}
                 aria-label={`Set simulation speed to ${s}x`}
                 aria-pressed={simSpeed === s}
-                className={`px-1.5 py-0.5 text-[10px] font-mono rounded cursor-pointer transition-colors ${
+                className={`px-1.5 py-0.5 text-xs rounded cursor-pointer transition-colors ${
                   simSpeed === s ? 'bg-cyan-700 text-white font-bold' : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
@@ -179,7 +179,7 @@ export const Header: React.FC = () => {
           <button
             onClick={clearFaults}
             aria-label="Reset telemetry fault overrides"
-            className="flex items-center gap-1 px-2 py-1 text-[11px] font-mono bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 rounded cursor-pointer transition-colors"
+            className="flex items-center gap-1 px-2 py-1 text-xs bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 rounded cursor-pointer transition-colors"
           >
             <RotateCcw className="w-3.5 h-3.5 text-slate-400" />
             <span className="hidden sm:inline">RESET</span>

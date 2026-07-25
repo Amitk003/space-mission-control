@@ -35,56 +35,56 @@ export const OverviewModule: React.FC = () => {
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
         {/* Altitude */}
         <div className="bg-slate-900/80 p-3 rounded-xl border border-slate-800 flex flex-col justify-between">
-          <span className="text-[10px] font-mono text-slate-400 tracking-wider">ORBIT ALTITUDE</span>
+          <span className="text-xs text-slate-400 tracking-wider">Orbit Altitude</span>
           <div className="flex items-baseline gap-1 mt-1">
             <TickerRef
               selector={(t) => t.orbit.altitudeKm.toFixed(2)}
               className="text-lg font-bold font-mono text-cyan-300"
               fallback="408.70"
             />
-            <span className="text-xs text-slate-400 font-mono">km</span>
+            <span className="text-xs text-slate-400">km</span>
           </div>
-          <span className="text-[9px] font-mono text-slate-500 mt-1">LEO Circular Orbit</span>
+          <span className="text-[10px] text-slate-500 mt-1">LEO Circular Orbit</span>
         </div>
 
         {/* Orbital Velocity */}
         <div className="bg-slate-900/80 p-3 rounded-xl border border-slate-800 flex flex-col justify-between">
-          <span className="text-[10px] font-mono text-slate-400 tracking-wider">VELOCITY</span>
+          <span className="text-xs text-slate-400 tracking-wider">Velocity</span>
           <div className="flex items-baseline gap-1 mt-1">
             <TickerRef
               selector={(t) => t.orbit.velocityKmS.toFixed(3)}
               className="text-lg font-bold font-mono text-cyan-300"
               fallback="7.670"
             />
-            <span className="text-xs text-slate-400 font-mono">km/s</span>
+            <span className="text-xs text-slate-400">km/s</span>
           </div>
-          <span className="text-[9px] font-mono text-slate-500 mt-1">27,612 km/h Ground</span>
+          <span className="text-[10px] text-slate-500 mt-1">27,612 km/h Ground</span>
         </div>
 
         {/* Solar Power */}
         <div className="bg-slate-900/80 p-3 rounded-xl border border-slate-800 flex flex-col justify-between">
-          <span className="text-[10px] font-mono text-slate-400 tracking-wider">SOLAR ARRAY BUS</span>
+          <span className="text-xs text-slate-400 tracking-wider">Solar Array Bus</span>
           <div className="flex items-baseline gap-1 mt-1">
             <TickerRef
               selector={(t) => t.eps.solarArrayPowerW.toFixed(0)}
               className="text-lg font-bold font-mono text-amber-300"
               fallback="1440"
             />
-            <span className="text-xs text-slate-400 font-mono">W</span>
+            <span className="text-xs text-slate-400">W</span>
           </div>
-          <span className="text-[9px] font-mono text-slate-500 mt-1">Dual GaAs Array Wings</span>
+          <span className="text-[10px] text-slate-500 mt-1">Dual GaAs Array Wings</span>
         </div>
 
         {/* Battery SoC */}
         <div className="bg-slate-900/80 p-3 rounded-xl border border-slate-800 flex flex-col justify-between">
-          <span className="text-[10px] font-mono text-slate-400 tracking-wider">BATTERY CHARGE</span>
+          <span className="text-xs text-slate-400 tracking-wider">Battery Charge</span>
           <div className="flex items-baseline gap-1 mt-1">
             <TickerRef
               selector={(t) => t.eps.batterySoCPct.toFixed(1)}
               className="text-lg font-bold font-mono text-emerald-400"
               fallback="94.5"
             />
-            <span className="text-xs text-slate-400 font-mono">%</span>
+            <span className="text-xs text-slate-400">%</span>
           </div>
           <div className="w-full bg-slate-800 h-1.5 rounded-full mt-1.5 overflow-hidden">
             <div
@@ -96,32 +96,32 @@ export const OverviewModule: React.FC = () => {
 
         {/* Signal RSSI */}
         <div className="bg-slate-900/80 p-3 rounded-xl border border-slate-800 flex flex-col justify-between">
-          <span className="text-[10px] font-mono text-slate-400 tracking-wider">DOWNLINK RSSI</span>
+          <span className="text-xs text-slate-400 tracking-wider">Downlink RSSI</span>
           <div className="flex items-baseline gap-1 mt-1">
             <TickerRef
               selector={(t) => t.comms.rssiDbm.toFixed(1)}
               className="text-lg font-bold font-mono text-cyan-300"
               fallback="-76.2"
             />
-            <span className="text-xs text-slate-400 font-mono">dBm</span>
+            <span className="text-xs text-slate-400">dBm</span>
           </div>
-          <span className="text-[9px] font-mono text-slate-500 mt-1">
+          <span className="text-[10px] text-slate-500 mt-1">
             {telemetry?.comms.activeGroundStation || 'No Ground Link'}
           </span>
         </div>
 
         {/* Hull Temperature */}
         <div className="bg-slate-900/80 p-3 rounded-xl border border-slate-800 flex flex-col justify-between">
-          <span className="text-[10px] font-mono text-slate-400 tracking-wider">HULL SUNSIDE TEMP</span>
+          <span className="text-xs text-slate-400 tracking-wider">Hull Sunside Temp</span>
           <div className="flex items-baseline gap-1 mt-1">
             <TickerRef
               selector={(t) => t.thermal.hullSunsideTempC.toFixed(1)}
               className="text-lg font-bold font-mono text-rose-400"
               fallback="118.4"
             />
-            <span className="text-xs text-slate-400 font-mono">°C</span>
+            <span className="text-xs text-slate-400">C</span>
           </div>
-          <span className="text-[9px] font-mono text-slate-500 mt-1">MLI Multi-Layer Shield</span>
+          <span className="text-[10px] text-slate-500 mt-1">MLI Multi-Layer Shield</span>
         </div>
       </div>
 
@@ -130,11 +130,11 @@ export const OverviewModule: React.FC = () => {
         {/* Left Column: 6 Subsystem Health Cards */}
         <div className="lg:col-span-2 space-y-3">
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-bold font-mono text-slate-200 tracking-wide flex items-center gap-2">
+            <h2 className="text-sm font-bold text-slate-200 tracking-wide flex items-center gap-2">
               <Activity className="w-4 h-4 text-cyan-400" />
-              <span>SPACECRAFT SUBSYSTEM HEALTH MATRIX</span>
+              <span>Spacecraft Subsystem Health</span>
             </h2>
-            <span className="text-[10px] font-mono text-slate-400">AUTOMATED REAL-TIME MONITORING</span>
+            <span className="text-xs text-slate-400">Real-Time Monitoring</span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -164,27 +164,27 @@ export const OverviewModule: React.FC = () => {
                             : 'text-rose-400'
                         }`}
                       />
-                      <span className="text-xs font-bold font-mono text-slate-200">{name}</span>
+                      <span className="text-xs font-bold text-slate-200">{name}</span>
                     </div>
 
                     <span
-                      className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded border ${
+                      className={`text-xs font-bold px-2 py-0.5 rounded border ${
                         status === 'NOMINAL'
                           ? 'bg-emerald-950/80 border-emerald-800 text-emerald-400'
                           : status === 'WARNING'
                           ? 'bg-amber-950/80 border-amber-800 text-amber-300'
-                          : 'bg-rose-950/90 border-rose-800 text-rose-300 animate-pulse'
+                          : 'bg-rose-950/90 border-rose-800 text-rose-300'
                       }`}
                     >
                       {status}
                     </span>
                   </div>
 
-                  <p className="text-[11px] text-slate-300 font-mono mb-2">
+                  <p className="text-xs text-slate-300 mb-2">
                     {sub?.message || 'Operational checks passed.'}
                   </p>
 
-                  <div className="grid grid-cols-3 gap-1 pt-2 border-t border-slate-800/80 text-[10px] font-mono text-slate-400">
+                  <div className="grid grid-cols-3 gap-1 pt-2 border-t border-slate-800/80 text-xs text-slate-400">
                     <div>
                       <span>TEMP:</span>{' '}
                       <strong className="text-slate-200">{sub ? `${sub.temperatureC}°C` : '--'}</strong>
@@ -208,40 +208,40 @@ export const OverviewModule: React.FC = () => {
         <div className="space-y-4">
           {/* Orbital Mechanics Overview Card */}
           <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-3">
-            <h3 className="text-xs font-bold font-mono text-cyan-400 tracking-wide flex items-center gap-1.5">
+            <h3 className="text-xs font-bold text-cyan-400 tracking-wide flex items-center gap-1.5">
               <Gauge className="w-4 h-4 text-cyan-400" />
-              <span>KEPLERIAN ORBITAL PARAMETERS</span>
+              <span>Keplerian Orbital Parameters</span>
             </h3>
 
-            <div className="space-y-2 text-xs font-mono">
+            <div className="space-y-2 text-xs">
               <div className="flex justify-between py-1 border-b border-slate-800">
                 <span className="text-slate-400">Semi-Major Axis (a):</span>
-                <span className="text-slate-200 font-bold">{telemetry?.orbit.semiMajorAxisKm || 6778.14} km</span>
+                <span className="text-slate-200 font-bold font-mono">{telemetry?.orbit.semiMajorAxisKm || 6778.14} km</span>
               </div>
               <div className="flex justify-between py-1 border-b border-slate-800">
                 <span className="text-slate-400">Eccentricity (e):</span>
-                <span className="text-slate-200 font-bold">{telemetry?.orbit.eccentricity || 0.00052}</span>
+                <span className="text-slate-200 font-bold font-mono">{telemetry?.orbit.eccentricity || 0.00052}</span>
               </div>
               <div className="flex justify-between py-1 border-b border-slate-800">
                 <span className="text-slate-400">Inclination (i):</span>
-                <span className="text-slate-200 font-bold">{telemetry?.orbit.inclinationDeg || 51.6}°</span>
+                <span className="text-slate-200 font-bold font-mono">{telemetry?.orbit.inclinationDeg || 51.6}°</span>
               </div>
               <div className="flex justify-between py-1 border-b border-slate-800">
-                <span className="text-slate-400">True Anomaly (ν):</span>
-                <span className="text-cyan-300 font-bold">{telemetry?.orbit.trueAnomalyDeg || 142.8}°</span>
+                <span className="text-slate-400">True Anomaly (v):</span>
+                <span className="text-cyan-300 font-bold font-mono">{telemetry?.orbit.trueAnomalyDeg || 142.8}°</span>
               </div>
               <div className="flex justify-between py-1 border-b border-slate-800">
                 <span className="text-slate-400">Orbital Period (T):</span>
-                <span className="text-slate-200 font-bold">92.68 minutes</span>
+                <span className="text-slate-200 font-bold font-mono">92.68 minutes</span>
               </div>
               <div className="flex justify-between py-1">
                 <span className="text-slate-400">Eclipse Status:</span>
                 <span
-                  className={`font-bold ${
+                  className={`font-bold font-mono ${
                     telemetry?.orbit.inEclipse ? 'text-amber-400' : 'text-emerald-400'
                   }`}
                 >
-                  {telemetry?.orbit.inEclipse ? 'ECLIPSE PHASE' : 'FULL SUNLIGHT'}
+                  {telemetry?.orbit.inEclipse ? 'Eclipse Phase' : 'Full Sunlight'}
                 </span>
               </div>
             </div>
@@ -249,37 +249,41 @@ export const OverviewModule: React.FC = () => {
 
           {/* Fault Injection Simulation Bench */}
           <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-3">
-            <h3 className="text-xs font-bold font-mono text-amber-400 tracking-wide flex items-center gap-1.5">
+            <h3 className="text-xs font-bold text-amber-400 tracking-wide flex items-center gap-1.5">
               <AlertOctagon className="w-4 h-4 text-amber-400" />
-              <span>SIMULATION FAULT INJECTION BENCH</span>
+              <span>Fault Injection Bench</span>
             </h3>
 
-            <p className="text-[11px] text-slate-400 font-mono">
-              Test operator response procedures by artificially introducing subsystem telemetry faults.
+            <p className="text-xs text-slate-400">
+              Test operator response by injecting subsystem faults.
             </p>
 
-            <div className="grid grid-cols-2 gap-2 text-xs font-mono">
+            <div className="grid grid-cols-2 gap-2 text-xs">
               <button
                 onClick={() => injectFault('EPS', 'WARNING')}
-                className="px-2.5 py-1.5 rounded bg-amber-950/60 hover:bg-amber-900 border border-amber-800/80 text-amber-300 text-[11px] cursor-pointer transition-colors"
+                aria-label="Inject electrical power system fault"
+                className="px-2.5 py-1.5 rounded bg-amber-950/60 hover:bg-amber-900 border border-amber-800/80 text-amber-300 cursor-pointer transition-colors"
               >
                 Inhibit Solar Bus
               </button>
               <button
                 onClick={() => injectFault('THERMAL', 'WARNING')}
-                className="px-2.5 py-1.5 rounded bg-rose-950/60 hover:bg-rose-900 border border-rose-800/80 text-rose-300 text-[11px] cursor-pointer transition-colors"
+                aria-label="Inject thermal drift fault"
+                className="px-2.5 py-1.5 rounded bg-rose-950/60 hover:bg-rose-900 border border-rose-800/80 text-rose-300 cursor-pointer transition-colors"
               >
                 Inject Thermal Drift
               </button>
               <button
                 onClick={() => injectFault('COMMS', 'CRITICAL')}
-                className="px-2.5 py-1.5 rounded bg-rose-950/60 hover:bg-rose-900 border border-rose-800/80 text-rose-300 text-[11px] cursor-pointer transition-colors"
+                aria-label="Drop transponder communications fault"
+                className="px-2.5 py-1.5 rounded bg-rose-950/60 hover:bg-rose-900 border border-rose-800/80 text-rose-300 cursor-pointer transition-colors"
               >
                 Drop Transponder
               </button>
               <button
                 onClick={() => executeCommand('REALIGN_SOLAR_PANELS')}
-                className="px-2.5 py-1.5 rounded bg-cyan-950/60 hover:bg-cyan-900 border border-cyan-800/80 text-cyan-300 text-[11px] cursor-pointer transition-colors"
+                aria-label="Auto-align solar panels"
+                className="px-2.5 py-1.5 rounded bg-cyan-950/60 hover:bg-cyan-900 border border-cyan-800/80 text-cyan-300 cursor-pointer transition-colors"
               >
                 Auto-Align Panels
               </button>
