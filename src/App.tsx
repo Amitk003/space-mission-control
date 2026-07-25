@@ -27,14 +27,14 @@ export default function App() {
       </main>
 
       {/* Footer Credentials & Status Bar */}
-      <footer className="bg-[#050811] border-t border-slate-900 px-4 py-2 text-[10px] font-mono text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-1">
+      <footer className="bg-[#050811] border-t border-slate-900 px-4 py-2 text-xs text-slate-400 flex flex-col sm:flex-row items-center justify-between gap-1">
         <div>
-          ASTRAEA-1 MISSION CONTROL SIMULATOR | BROWSER-NATIVE MULTITHREADED ARCHITECTURE
+          Astraea-1 Mission Control Simulator
         </div>
         <div className="flex items-center gap-3">
-          <span>WEB WORKER: <strong className="text-emerald-400">ONLINE (60Hz)</strong></span>
-          <span>INDEXEDDB: <strong className="text-cyan-400">ACTIVE (DEXIE)</strong></span>
-          <span>AUDIO ENGINE: <strong className="text-amber-400">SYNTHESIZED</strong></span>
+          <span>Web Worker: <strong className="text-emerald-400 font-mono">Online (60Hz)</strong></span>
+          <span>IndexedDB: <strong className="text-cyan-400 font-mono">Active</strong></span>
+          <span>Audio: <strong className="text-amber-400 font-mono">Synthesized</strong></span>
         </div>
       </footer>
     </div>

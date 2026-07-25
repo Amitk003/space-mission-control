@@ -40,12 +40,12 @@ export const TimelineModule: React.FC = () => {
   return (
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-slate-900/80 p-3.5 rounded-xl border border-slate-800">
-        <div className="flex items-center gap-2 font-mono text-xs text-slate-200">
+        <div className="flex items-center gap-2 text-xs text-slate-200">
           <HardDrive className="w-4 h-4 text-cyan-400" />
-          <span className="font-bold">MISSION PHASE TIMELINE & HISTORICAL LOGS (INDEXEDDB TIME-SERIES)</span>
+          <span className="font-bold">Mission Timeline and Event Logs</span>
         </div>
 
-        <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-lg border border-slate-800 text-xs font-mono">
+        <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-lg border border-slate-800 text-xs">
           {['ALL', 'MILESTONE', 'PHASE_CHANGE', 'ANOMALY', 'COMMAND'].map((filter) => (
             <button
               key={filter}
@@ -91,11 +91,11 @@ export const TimelineModule: React.FC = () => {
 
                 {/* Event Card */}
                 <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-1.5">
-                  <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
+                  <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
                     <div className="flex items-center gap-2">
                       <span className="font-bold text-slate-100">{ev.title}</span>
                       {ev.subsystem && (
-                        <span className="px-1.5 py-0.2 rounded bg-cyan-950 text-cyan-300 border border-cyan-800 text-[10px]">
+                        <span className="px-1.5 py-0.2 rounded bg-cyan-950 text-cyan-300 border border-cyan-800 text-xs font-mono">
                           {ev.subsystem}
                         </span>
                       )}
@@ -110,7 +110,7 @@ export const TimelineModule: React.FC = () => {
                     </div>
                   </div>
 
-                  <p className="text-xs text-slate-300 font-mono">{ev.description}</p>
+                  <p className="text-xs text-slate-300">{ev.description}</p>
                 </div>
               </div>
             );

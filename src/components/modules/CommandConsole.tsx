@@ -33,16 +33,16 @@ export const CommandConsole: React.FC = () => {
   };
 
   return (
-    <div className="bg-[#050811] p-3 rounded-xl border border-cyan-900/40 space-y-2 font-mono text-xs">
+    <div className="bg-[#050811] p-3 rounded-xl border border-cyan-900/40 space-y-2 text-xs">
       <div className="flex items-center justify-between text-slate-400 border-b border-slate-800 pb-2">
         <div className="flex items-center gap-1.5 font-bold text-cyan-400">
           <Terminal className="w-4 h-4" />
-          <span>ASTRAEA-1 TELEMETRY BUS TERMINAL</span>
+          <span>Astraea-1 Telemetry Bus Terminal</span>
         </div>
-        <span className="text-[10px]">BAUD RATE: 115200 bps</span>
+        <span className="text-xs">Baud Rate: 115200 bps</span>
       </div>
 
-      <div className="h-[120px] overflow-y-auto space-y-1 text-[11px] pr-1" aria-live="polite" aria-atomic="false">
+      <div className="h-[120px] overflow-y-auto space-y-1 text-xs pr-1 font-mono" aria-live="polite" aria-atomic="false">
         <p className="text-slate-500">[SYSTEM] Operator Session Initialized. Socket ready.</p>
         {commandLogs.map((log) => (
           <p key={log.id} className="text-slate-300">

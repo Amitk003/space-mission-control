@@ -16,10 +16,10 @@ export const ResizableLayout: React.FC = () => {
   return (
     <div className="flex-1 flex flex-col min-h-0 space-y-3">
       {/* Module Layout Bar with Split Ratio Controls */}
-      <div className="flex items-center justify-between bg-slate-900/60 px-3 py-1.5 rounded-lg border border-slate-800 text-xs font-mono">
+      <div className="flex items-center justify-between bg-slate-900/60 px-3 py-1.5 rounded-lg border border-slate-800 text-xs">
         <div className="flex items-center gap-2 text-slate-300">
           <Sliders className="w-3.5 h-3.5 text-cyan-400" />
-          <span>DISPLAY REAL ESTATE LAYOUT:</span>
+          <span>Display Layout:</span>
         </div>
 
         <div className="flex items-center gap-2">
@@ -31,7 +31,7 @@ export const ResizableLayout: React.FC = () => {
                 : 'bg-slate-900 border-slate-800 text-slate-400'
             }`}
           >
-            {show3dInTab ? '3D VIEWPORT SPLIT (ON)' : '3D VIEWPORT SPLIT (HIDDEN)'}
+            {show3dInTab ? '3D Split: On' : '3D Split: Hidden'}
           </button>
 
           {show3dInTab && (

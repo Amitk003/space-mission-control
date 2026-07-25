@@ -38,7 +38,7 @@ export const SpacecraftCanvas: React.FC = () => {
             }`}
           >
             <Rotate3d className="w-3.5 h-3.5" />
-            <span>SPACECRAFT CAD</span>
+            <span>Spacecraft CAD</span>
           </button>
           <button
             onClick={() => setSpatialViewMode('GLOBAL_ORBIT')}
@@ -51,7 +51,7 @@ export const SpacecraftCanvas: React.FC = () => {
             }`}
           >
             <Globe className="w-3.5 h-3.5" />
-            <span>GLOBAL ORBIT</span>
+            <span>Global Orbit</span>
           </button>
         </div>
 
@@ -102,20 +102,20 @@ export const SpacecraftCanvas: React.FC = () => {
       </Canvas>
 
       {/* Viewport Bottom Status Bar */}
-      <div className="absolute bottom-3 left-3 right-3 z-10 flex items-center justify-between text-[11px] font-mono text-slate-400 bg-slate-950/80 px-3 py-1.5 rounded-lg border border-slate-800/80 backdrop-blur-md pointer-events-none">
+      <div className="absolute bottom-3 left-3 right-3 z-10 flex items-center justify-between text-xs text-slate-400 bg-slate-950/80 px-3 py-1.5 rounded-lg border border-slate-800/80 backdrop-blur-md pointer-events-none">
         <div className="flex items-center gap-3">
           <span>
-            SUN VECTOR:{' '}
-            <strong className={inEclipse ? 'text-amber-400' : 'text-emerald-400'}>
-              {inEclipse ? 'ECLIPSE (UMBRA)' : 'DIRECT SUNLIGHT'}
+            Sun Vector:{' '}
+            <strong className={`font-mono ${inEclipse ? 'text-amber-400' : 'text-emerald-400'}`}>
+              {inEclipse ? 'Eclipse (Umbra)' : 'Direct Sunlight'}
             </strong>
           </span>
           <span className="hidden sm:inline">
-            GYRO MODE:{' '}
-            <strong className="text-cyan-300">{telemetry?.adcs.mode || 'FINE_POINTING'}</strong>
+            Gyro Mode:{' '}
+            <strong className="text-cyan-300 font-mono">{telemetry?.adcs.mode || 'Fine Pointing'}</strong>
           </span>
         </div>
-        <div>INTERACTIVE 3D VIEW | DRAG TO ROTATE</div>
+        <div>Drag to rotate 3D view</div>
       </div>
     </div>
   );

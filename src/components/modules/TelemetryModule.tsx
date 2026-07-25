@@ -83,9 +83,9 @@ export const TelemetryModule: React.FC = () => {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between bg-slate-900/80 p-3 rounded-xl border border-slate-800">
-        <div className="flex items-center gap-2 font-mono text-xs text-slate-200">
+        <div className="flex items-center gap-2 text-xs text-slate-200">
           <ChartIcon className="w-4 h-4 text-cyan-400" />
-          <span className="font-bold">HISTORICAL TELEMETRY ANALYTICS (INDEXEDDB ARCHIVE)</span>
+          <span className="font-bold">Telemetry Analytics (IndexedDB Archive)</span>
         </div>
 
         <div className="flex items-center gap-1.5 bg-slate-950 p-1 rounded-lg border border-slate-800">
@@ -94,7 +94,7 @@ export const TelemetryModule: React.FC = () => {
               key={mins}
               onClick={() => setTimeWindowMin(mins)}
               aria-label={`Show last ${mins} minutes`}
-              className={`px-2.5 py-1 text-xs font-mono rounded cursor-pointer transition-colors ${
+              className={`px-2.5 py-1 text-xs rounded cursor-pointer transition-colors ${
                 timeWindowMin === mins
                   ? 'bg-cyan-950 text-cyan-300 border border-cyan-700 font-bold'
                   : 'text-slate-400 hover:text-slate-200'
@@ -110,12 +110,12 @@ export const TelemetryModule: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Chart 1: Altitude & Velocity vs Time */}
         <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-3">
-          <h3 className="text-xs font-bold font-mono text-cyan-400 flex items-center gap-1.5">
+          <h3 className="text-xs font-bold text-cyan-400 flex items-center gap-1.5">
             <Activity className="w-4 h-4 text-cyan-400" />
-            <span>ORBITAL KINEMATICS (ALTITUDE & VELOCITY)</span>
+            <span>Orbital Kinematics (Altitude and Velocity)</span>
           </h3>
 
-          <div className="h-[220px] w-full text-xs font-mono">
+          <div className="h-[220px] w-full text-xs">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
@@ -151,12 +151,12 @@ export const TelemetryModule: React.FC = () => {
 
         {/* Chart 2: Solar Power & Battery SoC Area Chart */}
         <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-3">
-          <h3 className="text-xs font-bold font-mono text-amber-400 flex items-center gap-1.5">
+          <h3 className="text-xs font-bold text-amber-400 flex items-center gap-1.5">
             <Zap className="w-4 h-4 text-amber-400" />
-            <span>POWER GENERATION & BATTERY SOC PROFILE</span>
+            <span>Power Generation and Battery Profile</span>
           </h3>
 
-          <div className="h-[220px] w-full text-xs font-mono">
+          <div className="h-[220px] w-full text-xs">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
@@ -192,12 +192,12 @@ export const TelemetryModule: React.FC = () => {
 
         {/* Chart 3: Thermal Profile */}
         <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-3 lg:col-span-2">
-          <h3 className="text-xs font-bold font-mono text-rose-400 flex items-center gap-1.5">
+          <h3 className="text-xs font-bold text-rose-400 flex items-center gap-1.5">
             <Flame className="w-4 h-4 text-rose-400" />
-            <span>THERMAL PROFILE (HULL SUNSIDE vs CPU TEMP)</span>
+            <span>Thermal Profile (Hull vs CPU Temp)</span>
           </h3>
 
-          <div className="h-[220px] w-full text-xs font-mono">
+          <div className="h-[220px] w-full text-xs">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
