@@ -1,4 +1,4 @@
-import React, { useRef, useMemo } from 'react';
+import { useRef, useMemo, useCallback, type MouseEvent } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
@@ -51,7 +51,7 @@ const useSolarMaterial = (selected: boolean, inEclipse: boolean) => {
 };
 
 /* ─── Main Spacecraft Component ─── */
-export const SpacecraftModel: React.FC = () => {
+export const SpacecraftModel = () => {
   const groupRef = useRef<THREE.Group>(null);
   const antennaRef = useRef<THREE.Group>(null);
 
@@ -74,17 +74,18 @@ export const SpacecraftModel: React.FC = () => {
     }
   });
 
-  const handleClick = (component: string) => (e: any) => {
+  const handleClick = useCallback((e: MouseEvent) => {
     e.stopPropagation();
-    setSelectedComponent(component);
-  };
+    const component = (e.currentTarget as HTMLElement).dataset.component;
+    if (component) setSelectedComponent(component);
+  }, []);
 
   return (
     <group ref={groupRef} position={[0, 0, 0]}>
       {/* ═══════════════════════════════════════════════════════════
           MAIN BUS - Multi-layer insulated spacecraft body
          ═══════════════════════════════════════════════════════════ */}
-      <group onClick={handleClick('MAIN_BUS')}>
+      <group onClick={handleClick} data-component="MAIN_BUS">
         {/* Primary bus structure */}
         <mesh position={[0, 0, 0]}>
           <boxGeometry args={[1.6, 1.6, 2.0]} />
@@ -110,7 +111,7 @@ export const SpacecraftModel: React.FC = () => {
           SOLAR ARRAY WINGS - Dual deployable panels
          ═══════════════════════════════════════════════════════════ */}
       {/* Left Wing */}
-      <group position={[-3.0, 0, 0]} onClick={handleClick('SOLAR_ARRAY_1')}>
+      <group position={[-3.0, 0, 0]} onClick={handleClick} data-component="SOLAR_ARRAY_1">
         {/* Solar panel surface */}
         <mesh>
           <boxGeometry args={[3.8, 1.2, 0.04]} />
@@ -142,7 +143,7 @@ export const SpacecraftModel: React.FC = () => {
       </group>
 
       {/* Right Wing */}
-      <group position={[3.0, 0, 0]} onClick={handleClick('SOLAR_ARRAY_2')}>
+      <group position={[3.0, 0, 0]} onClick={handleClick} data-component="SOLAR_ARRAY_2">
         <mesh>
           <boxGeometry args={[3.8, 1.2, 0.04]} />
           <primitive object={solarMat2} attach="material" />
@@ -172,7 +173,7 @@ export const SpacecraftModel: React.FC = () => {
       {/* ═══════════════════════════════════════════════════════════
           HIGH-GAIN PARABOLIC ANTENNA
          ═══════════════════════════════════════════════════════════ */}
-      <group ref={antennaRef} position={[0, 1.2, 0]} onClick={handleClick('HIGH_GAIN_ANTENNA')}>
+      <group ref={antennaRef} position={[0, 1.2, 0]} onClick={handleClick} data-component="HIGH_GAIN_ANTENNA">
         {/* Dish reflector */}
         <mesh rotation={[-Math.PI / 3, 0, 0]}>
           <cylinderGeometry args={[1.0, 0.15, 0.25, 32]} />
@@ -219,7 +220,7 @@ export const SpacecraftModel: React.FC = () => {
         [-0.8, -0.8, -1.05],
         [0.8, -0.8, -1.05],
       ].map((pos, idx) => (
-        <group key={`rcs-${idx}`} position={pos as [number, number, number]} onClick={handleClick('RCS_THRUSTERS')}>
+        <group key={`rcs-${idx}`} position={pos as [number, number, number]} onClick={handleClick} data-component="RCS_THRUSTERS">
           {/* Nozzle bell */}
           <mesh rotation={[Math.PI, 0, 0]}>
             <coneGeometry args={[0.08, 0.2, 12]} />
@@ -245,7 +246,7 @@ export const SpacecraftModel: React.FC = () => {
       {/* ═══════════════════════════════════════════════════════════
           PAYLOAD OPTICS BAY - Earth observation camera
          ═══════════════════════════════════════════════════════════ */}
-      <group position={[0, -1.0, 0]} onClick={handleClick('PAYLOAD_OPTICS')}>
+      <group position={[0, -1.0, 0]} onClick={handleClick} data-component="PAYLOAD_OPTICS">
         {/* Telescope barrel */}
         <mesh rotation={[Math.PI, 0, 0]}>
           <cylinderGeometry args={[0.4, 0.5, 0.7, 24]} />
@@ -280,7 +281,7 @@ export const SpacecraftModel: React.FC = () => {
       {/* ═══════════════════════════════════════════════════════════
           STAR TRACKER ASSEMBLY
          ═══════════════════════════════════════════════════════════ */}
-      <group position={[0, 0, -1.1]} onClick={handleClick('STAR_TRACKER')}>
+      <group position={[0, 0, -1.1]} onClick={handleClick} data-component="STAR_TRACKER">
         <mesh rotation={[Math.PI / 4, 0, 0]}>
           <cylinderGeometry args={[0.15, 0.2, 0.35, 16]} />
           <meshPhysicalMaterial
