@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { Globe, Rotate3d } from 'lucide-react';
@@ -7,7 +7,7 @@ import { EarthOrbitScene } from './EarthOrbitScene';
 import { SpacecraftModel } from './SpacecraftModel';
 
 /* ─── Loading Fallback ─── */
-const CanvasLoader: React.FC = () => (
+const CanvasLoader = () => (
   <div className="absolute inset-0 flex items-center justify-center">
     <div className="flex flex-col items-center gap-3">
       <div className="w-8 h-8 border-2 border-[var(--color-accent)] border-t-transparent rounded-full animate-spin" />
@@ -16,7 +16,7 @@ const CanvasLoader: React.FC = () => (
   </div>
 );
 
-export const SpacecraftCanvas: React.FC = () => {
+export const SpacecraftCanvas = () => {
   const {
     spatialViewMode,
     setSpatialViewMode,
