@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Columns2, Rows2, Sliders } from 'lucide-react';
+import { Sliders } from 'lucide-react';
 import { SpacecraftCanvas } from './3d/SpacecraftCanvas';
 import { CommsModule } from './modules/CommsModule';
 import { OverviewModule } from './modules/OverviewModule';
 import { TelemetryModule } from './modules/TelemetryModule';
 import { TimelineModule } from './modules/TimelineModule';
+import { ErrorBoundary } from './ErrorBoundary';
 import { useMissionStore } from '../store/useMissionStore';
 
 export const ResizableLayout: React.FC = () => {
@@ -65,17 +66,17 @@ export const ResizableLayout: React.FC = () => {
                 : undefined
             }
           >
-            <SpacecraftCanvas />
+            <ErrorBoundary><SpacecraftCanvas /></ErrorBoundary>
           </div>
         )}
 
         {/* Right Side: Primary Active Dashboard Module */}
         {activeModule !== '3D_LAB' && (
           <div className="flex-1 min-w-0 overflow-y-auto space-y-4 pr-1">
-            {activeModule === 'OVERVIEW' && <OverviewModule />}
-            {activeModule === 'TELEMETRY' && <TelemetryModule />}
-            {activeModule === 'COMMS' && <CommsModule />}
-            {activeModule === 'TIMELINE' && <TimelineModule />}
+            {activeModule === 'OVERVIEW' && <ErrorBoundary><OverviewModule /></ErrorBoundary>}
+            {activeModule === 'TELEMETRY' && <ErrorBoundary><TelemetryModule /></ErrorBoundary>}
+            {activeModule === 'COMMS' && <ErrorBoundary><CommsModule /></ErrorBoundary>}
+            {activeModule === 'TIMELINE' && <ErrorBoundary><TimelineModule /></ErrorBoundary>}
           </div>
         )}
       </div>

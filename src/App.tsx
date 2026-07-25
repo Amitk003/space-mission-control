@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Header } from './components/Header';
 import { CommandConsole } from './components/modules/CommandConsole';
 import { ResizableLayout } from './components/ResizableLayout';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { useMissionStore } from './store/useMissionStore';
 
 export default function App() {
@@ -22,7 +23,7 @@ export default function App() {
 
       <main id="main-content" className="flex-1 p-3 md:p-4 flex flex-col min-h-0 space-y-3">
         <ResizableLayout />
-        <CommandConsole />
+        <ErrorBoundary><CommandConsole /></ErrorBoundary>
       </main>
 
       {/* Footer Credentials & Status Bar */}

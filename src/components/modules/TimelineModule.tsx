@@ -25,11 +25,20 @@ export const TimelineModule: React.FC = () => {
     return records;
   }, [typeFilter]);
 
-  const eventList = events || [];
+  const eventList = events;
+  const isLoading = events === undefined;
+
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        <div className="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800 animate-pulse h-12" />
+        <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 animate-pulse h-[400px]" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">
-      {/* Header & Filters */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-slate-900/80 p-3.5 rounded-xl border border-slate-800">
         <div className="flex items-center gap-2 font-mono text-xs text-slate-200">
           <HardDrive className="w-4 h-4 text-cyan-400" />
@@ -41,6 +50,7 @@ export const TimelineModule: React.FC = () => {
             <button
               key={filter}
               onClick={() => setTypeFilter(filter)}
+              aria-label={`Filter by ${filter.replace(/_/g, ' ')}`}
               className={`px-2.5 py-1 rounded cursor-pointer transition-colors ${
                 typeFilter === filter
                   ? 'bg-cyan-950 text-cyan-300 border border-cyan-700 font-bold'
@@ -53,9 +63,13 @@ export const TimelineModule: React.FC = () => {
         </div>
       </div>
 
-      {/* Vertical Timeline List */}
-      <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-4">
-        <div className="relative border-l-2 border-cyan-900/60 ml-4 pl-6 space-y-6">
+      {(!eventList || eventList.length === 0) ? (
+        <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 text-center">
+          <p className="text-slate-400 text-xs font-mono">No mission events recorded yet.</p>
+        </div>
+      ) : (
+        <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-4">
+          <div className="relative border-l-2 border-cyan-900/60 ml-4 pl-6 space-y-6">
           {eventList.map((ev, index) => {
             const date = new Date(ev.timestamp);
             const timeStr = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
@@ -103,6 +117,7 @@ export const TimelineModule: React.FC = () => {
           })}
         </div>
       </div>
+      )}
     </div>
   );
 };

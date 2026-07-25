@@ -38,11 +38,50 @@ export const TelemetryModule: React.FC = () => {
     });
   }, [timeWindowMin]);
 
-  const chartData = logs || [];
+  const chartData = logs;
+  const isLoading = logs === undefined;
+
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        <div className="bg-slate-900/80 p-3 rounded-xl border border-slate-800 animate-pulse h-12" />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 animate-pulse h-[300px]" />
+          <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 animate-pulse h-[300px]" />
+          <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 animate-pulse h-[260px] lg:col-span-2" />
+        </div>
+      </div>
+    );
+  }
+
+  if (!chartData || chartData.length === 0) {
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center justify-between bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+          <p className="text-slate-400 text-xs font-mono">No telemetry data available for the selected time window.</p>
+          <div className="flex items-center gap-1.5 bg-slate-950 p-1 rounded-lg border border-slate-800">
+            {[5, 15, 30, 60].map((mins) => (
+              <button
+                key={mins}
+                onClick={() => setTimeWindowMin(mins)}
+                aria-label={`Show last ${mins} minutes`}
+                className={`px-2.5 py-1 text-xs font-mono rounded cursor-pointer transition-colors ${
+                  timeWindowMin === mins
+                    ? 'bg-cyan-950 text-cyan-300 border border-cyan-700 font-bold'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                Last {mins}m
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">
-      {/* Top Filter Bar */}
       <div className="flex items-center justify-between bg-slate-900/80 p-3 rounded-xl border border-slate-800">
         <div className="flex items-center gap-2 font-mono text-xs text-slate-200">
           <ChartIcon className="w-4 h-4 text-cyan-400" />
@@ -54,6 +93,7 @@ export const TelemetryModule: React.FC = () => {
             <button
               key={mins}
               onClick={() => setTimeWindowMin(mins)}
+              aria-label={`Show last ${mins} minutes`}
               className={`px-2.5 py-1 text-xs font-mono rounded cursor-pointer transition-colors ${
                 timeWindowMin === mins
                   ? 'bg-cyan-950 text-cyan-300 border border-cyan-700 font-bold'
