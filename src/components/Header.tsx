@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   Activity,
   AlertTriangle,
@@ -37,15 +37,19 @@ export const Header: React.FC = () => {
     { id: '3D_LAB', label: '3D Spatial Lab', icon: Globe2 },
   ];
 
+  const handleClearFaults = useCallback(() => {
+    if (window.confirm('Clear all injected faults?')) clearFaults();
+  }, [clearFaults]);
+
   return (
     <header
-      className="bg-[#0b0f19]/90 border-b border-cyan-900/40 backdrop-blur-md px-4 py-2.5 text-slate-200 select-none sticky top-0 z-40"
+      className="bg-[#0b0f19]/90 border-b border-[var(--color-accent)]/40 backdrop-blur-md px-3 md:px-4 py-2.5 text-[var(--color-text-primary)] select-none sticky top-0 z-40"
       onMouseEnter={() => setIsOverUI(true)}
       onMouseLeave={() => setIsOverUI(false)}
     >
-      <div className="flex flex-col md:flex-row items-center justify-between gap-3">
+      <div className="flex flex-col lg:flex-row items-center justify-between gap-2 lg:gap-3">
         {/* Brand & Orbit Telemetry */}
-        <div className="flex items-center gap-3 w-full md:w-auto justify-between md:justify-start">
+        <div className="flex items-center gap-3 w-full lg:w-auto justify-between lg:justify-start">
           <div className="flex items-center gap-2.5">
             <div className="relative flex items-center justify-center">
               <div
@@ -53,28 +57,28 @@ export const Header: React.FC = () => {
                 aria-label={`Status: ${masterAlert}`}
                 className={`w-3 h-3 rounded-full ${
                   masterAlert === 'NOMINAL'
-                    ? 'bg-emerald-400 shadow-[0_0_12px_#10b981]'
+                    ? 'bg-[var(--color-success)] shadow-[0_0_12px_var(--color-success)]'
                     : masterAlert === 'WARNING'
-                    ? 'bg-amber-400 shadow-[0_0_12px_#f59e0b]'
-                    : 'bg-rose-500 shadow-[0_0_16px_#f43f5e]'
+                    ? 'bg-[var(--color-warning)] shadow-[0_0_12px_var(--color-warning)]'
+                    : 'bg-[var(--color-danger)] shadow-[0_0_16px_var(--color-danger)]'
                 }`}
               />
             </div>
             <div>
-              <h1 className="text-base font-bold tracking-wider text-cyan-400 flex items-center gap-1.5">
-                ASTRAEA-1 <span className="text-xs px-1.5 py-0.5 rounded bg-cyan-950 border border-cyan-800 text-cyan-300 font-mono">LEO SIM</span>
+              <h1 className="text-base font-bold tracking-wider text-[var(--color-accent)] flex items-center gap-1.5">
+                ASTRAEA-1 <span className="text-xs px-1.5 py-0.5 rounded bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/50 text-[var(--color-accent)] font-mono">LEO SIM</span>
               </h1>
-              <p className="text-xs text-slate-400 tracking-tight">
+              <p className="text-xs text-[var(--color-text-muted)] tracking-tight">
                 SAT-ID: 2026-088A | NORAD: 58912
               </p>
             </div>
           </div>
 
-          <div className="h-6 w-px bg-slate-800 hidden md:block" />
+          <div className="h-6 w-px bg-[var(--color-border-subtle)] hidden lg:block" />
 
           {/* Mission Elapsed Time */}
-          <div className="bg-slate-900/80 px-3 py-1 rounded border border-slate-800 flex items-center gap-2">
-            <span className="text-xs text-slate-400">MET:</span>
+          <div className="bg-[var(--color-bg-card)]/80 px-3 py-1 rounded border border-[var(--color-border-subtle)] flex items-center gap-2">
+            <span className="text-xs text-[var(--color-text-muted)]">MET:</span>
             <TickerRef
               selector={(t) => {
                 const totalSec = t.metSec;
@@ -83,24 +87,24 @@ export const Header: React.FC = () => {
                 const secs = totalSec % 60;
                 return `T+${String(hrs).padStart(3, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
               }}
-              className="text-xs text-cyan-300 font-bold font-mono"
+              className="text-xs text-[var(--color-accent)] font-bold font-mono"
               fallback="T+000:00:00"
             />
           </div>
 
           {/* Orbit Number */}
-          <div className="hidden lg:flex items-center gap-1.5 text-xs text-slate-300 bg-slate-900/50 px-2.5 py-1 rounded border border-slate-800">
-            <span className="text-slate-400">Orbit:</span>
+          <div className="hidden lg:flex items-center gap-1.5 text-xs text-[var(--color-text-primary)]/80 bg-[var(--color-bg-card)]/50 px-2.5 py-1 rounded border border-[var(--color-border-subtle)]">
+            <span className="text-[var(--color-text-muted)]">Orbit:</span>
             <TickerRef
               selector={(t) => `#${t.orbit.orbitNumber}`}
-              className="text-emerald-400 font-semibold font-mono"
+              className="text-[var(--color-success)] font-semibold font-mono"
               fallback="#--"
             />
           </div>
         </div>
 
         {/* Navigation Tabs */}
-        <nav className="flex items-center gap-1 bg-slate-950/80 p-1 rounded-lg border border-slate-800/80 w-full md:w-auto overflow-x-auto">
+        <nav className="flex items-center gap-1 bg-[var(--color-bg-base)]/80 p-1 rounded-lg border border-[var(--color-border-subtle)]/80 w-full lg:w-auto overflow-x-auto">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeModule === item.id;
@@ -110,43 +114,43 @@ export const Header: React.FC = () => {
                 onClick={() => setActiveModule(item.id)}
                 aria-label={`${item.label} tab`}
                 aria-current={isActive ? 'page' : undefined}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs tracking-wide transition-all whitespace-nowrap cursor-pointer ${
+                className={`flex items-center gap-1.5 px-2.5 lg:px-3 py-1.5 rounded-md text-xs tracking-wide transition-all whitespace-nowrap cursor-pointer ${
                   isActive
-                    ? 'bg-cyan-950/90 text-cyan-300 border border-cyan-700/60 shadow-[0_0_10px_rgba(6,182,212,0.15)] font-semibold'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
+                    ? 'bg-[var(--color-accent)]/15 text-[var(--color-accent)] border border-[var(--color-accent)]/40 font-semibold'
+                    : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-card)]'
                 }`}
               >
-                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-cyan-400' : 'text-slate-500'}`} />
-                <span>{item.label}</span>
+                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[var(--color-accent)]' : 'text-[var(--color-text-muted)]'}`} />
+                <span className="truncate">{item.label}</span>
               </button>
             );
           })}
         </nav>
 
         {/* System Controls: Speed, Audio, Fault Reset */}
-        <div className="flex items-center gap-2 w-full md:w-auto justify-end">
+        <div className="flex items-center gap-2 w-full lg:w-auto justify-end flex-wrap">
           {/* Master Alert Status Badge */}
           <div
             className={`px-2.5 py-1 rounded border text-xs font-bold flex items-center gap-1.5 ${
               masterAlert === 'NOMINAL'
-                ? 'bg-emerald-950/60 border-emerald-800 text-emerald-400'
+                ? 'bg-[var(--color-success)]/15 border-[var(--color-success)]/50 text-[var(--color-success)]'
                 : masterAlert === 'WARNING'
-                ? 'bg-amber-950/80 border-amber-800 text-amber-300'
-                : 'bg-rose-950/90 border-rose-800 text-rose-300'
+                ? 'bg-[var(--color-warning)]/20 border-[var(--color-warning)]/50 text-[var(--color-warning)]'
+                : 'bg-[var(--color-danger)]/25 border-[var(--color-danger)]/50 text-[var(--color-danger)]'
             }`}
           >
             {masterAlert === 'NOMINAL' ? (
-              <Activity className="w-3.5 h-3.5 text-emerald-400" />
+              <Activity className="w-3.5 h-3.5" />
             ) : masterAlert === 'WARNING' ? (
-              <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
+              <AlertTriangle className="w-3.5 h-3.5" />
             ) : (
-              <ShieldAlert className="w-3.5 h-3.5 text-rose-400" />
+              <ShieldAlert className="w-3.5 h-3.5" />
             )}
             <span>{masterAlert}</span>
           </div>
 
           {/* Simulation Speed Switcher */}
-          <div className="flex items-center bg-slate-900 border border-slate-800 rounded p-0.5">
+          <div className="flex items-center bg-[var(--color-bg-card)] border border-[var(--color-border-subtle)] rounded p-0.5">
             {[1, 2, 5, 10].map((s) => (
               <button
                 key={s}
@@ -154,7 +158,7 @@ export const Header: React.FC = () => {
                 aria-label={`Set simulation speed to ${s}x`}
                 aria-pressed={simSpeed === s}
                 className={`px-1.5 py-0.5 text-xs rounded cursor-pointer transition-colors ${
-                  simSpeed === s ? 'bg-cyan-700 text-white font-bold' : 'text-slate-400 hover:text-slate-200'
+                  simSpeed === s ? 'bg-[var(--color-accent)]/60 text-white font-bold' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]'
                 }`}
               >
                 {s}x
@@ -166,10 +170,11 @@ export const Header: React.FC = () => {
           <button
             onClick={toggleAudioMute}
             aria-label={isAudioMuted ? 'Unmute audio' : 'Mute audio'}
+            title={isAudioMuted ? 'Click to unmute audio alerts' : 'Click to mute audio alerts'}
             className={`p-1.5 rounded border transition-colors cursor-pointer ${
               isAudioMuted
-                ? 'bg-slate-900 border-slate-800 text-slate-500 hover:text-slate-300'
-                : 'bg-cyan-950/60 border-cyan-800 text-cyan-400 hover:bg-cyan-900/80'
+                ? 'bg-[var(--color-bg-card)] border-[var(--color-border-subtle)] text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]'
+                : 'bg-[var(--color-accent)]/15 border-[var(--color-accent)]/50 text-[var(--color-accent)] hover:bg-[var(--color-accent)]/25'
             }`}
           >
             {isAudioMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
@@ -177,12 +182,13 @@ export const Header: React.FC = () => {
 
           {/* Clear Injected Faults */}
           <button
-            onClick={clearFaults}
+            onClick={handleClearFaults}
             aria-label="Reset telemetry fault overrides"
-            className="flex items-center gap-1 px-2 py-1 text-xs bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 rounded cursor-pointer transition-colors"
+            title="Clear all injected faults and reset to nominal"
+            className="flex items-center gap-1 px-2 py-1 text-xs bg-[var(--color-bg-card)] hover:bg-[var(--color-bg-surface)] border border-[var(--color-border-default)] text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] rounded cursor-pointer transition-colors"
           >
-            <RotateCcw className="w-3.5 h-3.5 text-slate-400" />
-            <span className="hidden sm:inline">RESET</span>
+            <RotateCcw className="w-3 h-3" />
+            <span className="hidden sm:inline">Reset Faults</span>
           </button>
         </div>
       </div>

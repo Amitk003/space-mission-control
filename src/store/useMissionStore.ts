@@ -15,30 +15,25 @@ export type ViewModule = 'OVERVIEW' | 'TELEMETRY' | 'COMMS' | 'TIMELINE' | '3D_L
 export type SpatialViewMode = 'SPACECRAFT' | 'GLOBAL_ORBIT';
 
 export interface MissionStoreState {
-  // Navigation & Spatial view state
   activeModule: ViewModule;
   spatialViewMode: SpatialViewMode;
   selectedComponent: string | null;
-  isOverUI: boolean; // Pointer event lock flag for 3D raycasting vs UI overlays
+  isOverUI: boolean;
 
-  // Simulation controls
   isSimulating: boolean;
   simSpeed: number;
 
-  // Audio settings
   isAudioMuted: boolean;
   audioVolume: number;
 
-  // Live Telemetry Frame
   telemetry: TelemetryFrame | null;
 
-  // Command History
   commandLogs: CommandLog[];
 
-  // Event Logs cache
   latestEvents: MissionEvent[];
 
-  // Actions
+  highContrast: boolean;
+
   setActiveModule: (module: ViewModule) => void;
   setSpatialViewMode: (mode: SpatialViewMode) => void;
   setSelectedComponent: (componentId: string | null) => void;
@@ -46,15 +41,17 @@ export interface MissionStoreState {
   setSimSpeed: (speed: number) => void;
   toggleAudioMute: () => void;
   setAudioVolume: (vol: number) => void;
+  toggleHighContrast: () => void;
 
-  // Worker communication & Worker instance
   initWorker: () => void;
   executeCommand: (command: CommandType, args?: Record<string, unknown>) => void;
+  undoLastCommand: () => void;
   injectFault: (subsystem: SubsystemType, severity: 'WARNING' | 'CRITICAL') => void;
   clearFaults: () => void;
 }
 
 let workerInstance: Worker | null = null;
+let commandHistory: { command: CommandType; args?: Record<string, unknown> }[] = [];
 
 export const useMissionStore = create<MissionStoreState>((set, get) => ({
   activeModule: 'OVERVIEW',
@@ -80,6 +77,7 @@ export const useMissionStore = create<MissionStoreState>((set, get) => ({
     },
   ],
   latestEvents: [],
+  highContrast: false,
 
   setActiveModule: (module) => set({ activeModule: module }),
   setSpatialViewMode: (mode) => set({ spatialViewMode: mode }),
@@ -105,18 +103,21 @@ export const useMissionStore = create<MissionStoreState>((set, get) => ({
     set({ audioVolume: vol });
   },
 
+  toggleHighContrast: () => {
+    const next = !get().highContrast;
+    document.documentElement.setAttribute('data-high-contrast', next ? 'true' : 'false');
+    set({ highContrast: next });
+  },
+
   initWorker: async () => {
     if (workerInstance) return;
 
-    // Pre-seed Dexie IndexedDB
     await seedInitialDatabase();
 
-    // Instantiate Web Worker using standard URL module resolution
     workerInstance = new Worker(new URL('../workers/simulator.worker.ts', import.meta.url), {
       type: 'module',
     });
 
-    // Handle messages coming from simulation Web Worker
     workerInstance.onmessage = (event: MessageEvent<WorkerToMainMessage>) => {
       const msg = event.data;
 
@@ -125,7 +126,6 @@ export const useMissionStore = create<MissionStoreState>((set, get) => ({
           const frame = msg.payload;
           set({ telemetry: frame, isSimulating: true });
 
-          // Sonification Trigger based on telemetry master alert
           if (frame.masterAlertLevel === 'NOMINAL') {
             audioEngine.playNominalPing();
           } else if (frame.masterAlertLevel === 'WARNING') {
@@ -137,7 +137,6 @@ export const useMissionStore = create<MissionStoreState>((set, get) => ({
         }
 
         case 'TELEMETRY_BATCH': {
-          // Bulk add to Dexie IndexedDB in background without blocking UI thread
           db.telemetry_logs.bulkAdd(msg.payload).catch(() => {});
           break;
         }
@@ -164,18 +163,32 @@ export const useMissionStore = create<MissionStoreState>((set, get) => ({
       }
     };
 
-    // Start simulation
     const startMsg: MainToWorkerMessage = { type: 'START_SIMULATION' };
     workerInstance.postMessage(startMsg);
   },
 
   executeCommand: (command, args) => {
     audioEngine.playCommandSound();
+    commandHistory.push({ command, args });
+    if (commandHistory.length > 30) commandHistory.shift();
     if (workerInstance) {
       const msg: MainToWorkerMessage = {
         type: 'EXECUTE_COMMAND',
         command,
         args,
+      };
+      workerInstance.postMessage(msg);
+    }
+  },
+
+  undoLastCommand: () => {
+    const last = commandHistory.pop();
+    if (!last) return;
+    if (workerInstance) {
+      const msg: MainToWorkerMessage = {
+        type: 'EXECUTE_COMMAND',
+        command: 'RUN_DIAGNOSTICS',
+        args: { undo: last.command },
       };
       workerInstance.postMessage(msg);
     }

@@ -16,22 +16,30 @@ export const TickerRef: React.FC<TickerRefProps> = ({
   fallback = '--',
 }) => {
   const spanRef = useRef<HTMLSpanElement>(null);
+  const lastUpdateRef = useRef<number>(0);
+  const cachedValueRef = useRef<string>(fallback);
 
   useEffect(() => {
-    // Direct manual subscription to Zustand store
     const unsubscribe = useMissionStore.subscribe((state) => {
-      if (spanRef.current) {
-        const telemetry = state.telemetry;
-        if (telemetry) {
-          try {
-            const rawVal = selector(telemetry);
-            spanRef.current.textContent = format(rawVal);
-          } catch {
-            spanRef.current.textContent = fallback;
+      if (!spanRef.current) return;
+      const now = Date.now();
+      if (now - lastUpdateRef.current < 100) return;
+      lastUpdateRef.current = now;
+
+      const telemetry = state.telemetry;
+      if (telemetry) {
+        try {
+          const rawVal = selector(telemetry);
+          const formatted = format(rawVal);
+          if (formatted !== cachedValueRef.current) {
+            cachedValueRef.current = formatted;
+            spanRef.current.textContent = formatted;
           }
-        } else {
+        } catch {
           spanRef.current.textContent = fallback;
         }
+      } else {
+        spanRef.current.textContent = fallback;
       }
     });
 

@@ -19,7 +19,6 @@ import type { TelemetryLogEntry } from '../../types/telemetry';
 export const TelemetryModule: React.FC = () => {
   const [timeWindowMin, setTimeWindowMin] = useState<number>(15);
 
-  // Query Dexie IndexedDB for historical logs
   const logs = useLiveQuery(async () => {
     const cutoff = Date.now() - timeWindowMin * 60 * 1000;
     const records = await db.telemetry_logs
@@ -44,11 +43,11 @@ export const TelemetryModule: React.FC = () => {
   if (isLoading) {
     return (
       <div className="space-y-4">
-        <div className="bg-slate-900/80 p-3 rounded-xl border border-slate-800 animate-pulse h-12" />
+        <div className="bg-[var(--color-bg-card)]/80 p-3 rounded-xl border border-[var(--color-border-subtle)] animate-pulse h-12" />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 animate-pulse h-[300px]" />
-          <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 animate-pulse h-[300px]" />
-          <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 animate-pulse h-[260px] lg:col-span-2" />
+          <div className="bg-[var(--color-bg-card)]/80 p-4 rounded-xl border border-[var(--color-border-subtle)] animate-pulse h-[300px]" />
+          <div className="bg-[var(--color-bg-card)]/80 p-4 rounded-xl border border-[var(--color-border-subtle)] animate-pulse h-[300px]" />
+          <div className="bg-[var(--color-bg-card)]/80 p-4 rounded-xl border border-[var(--color-border-subtle)] animate-pulse h-[260px] lg:col-span-2" />
         </div>
       </div>
     );
@@ -57,18 +56,18 @@ export const TelemetryModule: React.FC = () => {
   if (!chartData || chartData.length === 0) {
     return (
       <div className="space-y-4">
-        <div className="flex items-center justify-between bg-slate-900/80 p-3 rounded-xl border border-slate-800">
-          <p className="text-slate-400 text-xs font-mono">No telemetry data available for the selected time window.</p>
-          <div className="flex items-center gap-1.5 bg-slate-950 p-1 rounded-lg border border-slate-800">
+        <div className="flex items-center justify-between bg-[var(--color-bg-card)]/80 p-3 rounded-xl border border-[var(--color-border-subtle)]">
+          <p className="text-[var(--color-text-muted)] text-xs">No telemetry data available for the selected time window.</p>
+          <div className="flex items-center gap-1.5 bg-[var(--color-bg-base)] p-1 rounded-lg border border-[var(--color-border-subtle)]">
             {[5, 15, 30, 60].map((mins) => (
               <button
                 key={mins}
                 onClick={() => setTimeWindowMin(mins)}
                 aria-label={`Show last ${mins} minutes`}
-                className={`px-2.5 py-1 text-xs font-mono rounded cursor-pointer transition-colors ${
+                className={`px-2.5 py-1 text-xs rounded cursor-pointer transition-colors ${
                   timeWindowMin === mins
-                    ? 'bg-cyan-950 text-cyan-300 border border-cyan-700 font-bold'
-                    : 'text-slate-400 hover:text-slate-200'
+                    ? 'bg-[var(--color-accent)]/20 text-[var(--color-accent)] border border-[var(--color-accent)]/50 font-bold'
+                    : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]'
                 }`}
               >
                 Last {mins}m
@@ -82,13 +81,13 @@ export const TelemetryModule: React.FC = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between bg-slate-900/80 p-3 rounded-xl border border-slate-800">
-        <div className="flex items-center gap-2 text-xs text-slate-200">
-          <ChartIcon className="w-4 h-4 text-cyan-400" />
+      <div className="flex items-center justify-between bg-[var(--color-bg-card)]/80 p-3 rounded-xl border border-[var(--color-border-subtle)]">
+        <div className="flex items-center gap-2 text-xs text-[var(--color-text-primary)]">
+          <ChartIcon className="w-4 h-4 text-[var(--color-accent)]" />
           <span className="font-bold">Telemetry Analytics (IndexedDB Archive)</span>
         </div>
 
-        <div className="flex items-center gap-1.5 bg-slate-950 p-1 rounded-lg border border-slate-800">
+        <div className="flex items-center gap-1.5 bg-[var(--color-bg-base)] p-1 rounded-lg border border-[var(--color-border-subtle)]">
           {[5, 15, 30, 60].map((mins) => (
             <button
               key={mins}
@@ -96,8 +95,8 @@ export const TelemetryModule: React.FC = () => {
               aria-label={`Show last ${mins} minutes`}
               className={`px-2.5 py-1 text-xs rounded cursor-pointer transition-colors ${
                 timeWindowMin === mins
-                  ? 'bg-cyan-950 text-cyan-300 border border-cyan-700 font-bold'
-                  : 'text-slate-400 hover:text-slate-200'
+                  ? 'bg-[var(--color-accent)]/20 text-[var(--color-accent)] border border-[var(--color-accent)]/50 font-bold'
+                  : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]'
               }`}
             >
               Last {mins}m
@@ -106,16 +105,15 @@ export const TelemetryModule: React.FC = () => {
         </div>
       </div>
 
-      {/* Grid of Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Chart 1: Altitude & Velocity vs Time */}
-        <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-3">
-          <h3 className="text-xs font-bold text-cyan-400 flex items-center gap-1.5">
-            <Activity className="w-4 h-4 text-cyan-400" />
+        <div className="bg-[var(--color-bg-card)]/80 p-4 rounded-xl border border-[var(--color-border-subtle)] space-y-3 min-w-0">
+          <h3 className="text-xs font-bold text-[var(--color-accent)] flex items-center gap-1.5">
+            <Activity className="w-4 h-4 text-[var(--color-accent)]" />
             <span>Orbital Kinematics (Altitude and Velocity)</span>
           </h3>
 
-          <div className="h-[220px] w-full text-xs">
+          <div className="h-[220px] w-full text-xs overflow-hidden">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
@@ -150,13 +148,13 @@ export const TelemetryModule: React.FC = () => {
         </div>
 
         {/* Chart 2: Solar Power & Battery SoC Area Chart */}
-        <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-3">
-          <h3 className="text-xs font-bold text-amber-400 flex items-center gap-1.5">
-            <Zap className="w-4 h-4 text-amber-400" />
+        <div className="bg-[var(--color-bg-card)]/80 p-4 rounded-xl border border-[var(--color-border-subtle)] space-y-3 min-w-0">
+          <h3 className="text-xs font-bold text-[var(--color-warning)] flex items-center gap-1.5">
+            <Zap className="w-4 h-4 text-[var(--color-warning)]" />
             <span>Power Generation and Battery Profile</span>
           </h3>
 
-          <div className="h-[220px] w-full text-xs">
+          <div className="h-[220px] w-full text-xs overflow-hidden">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
@@ -191,13 +189,13 @@ export const TelemetryModule: React.FC = () => {
         </div>
 
         {/* Chart 3: Thermal Profile */}
-        <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-3 lg:col-span-2">
-          <h3 className="text-xs font-bold text-rose-400 flex items-center gap-1.5">
-            <Flame className="w-4 h-4 text-rose-400" />
+        <div className="bg-[var(--color-bg-card)]/80 p-4 rounded-xl border border-[var(--color-border-subtle)] space-y-3 lg:col-span-2 min-w-0">
+          <h3 className="text-xs font-bold text-[var(--color-danger)] flex items-center gap-1.5">
+            <Flame className="w-4 h-4 text-[var(--color-danger)]" />
             <span>Thermal Profile (Hull vs CPU Temp)</span>
           </h3>
 
-          <div className="h-[220px] w-full text-xs">
+          <div className="h-[220px] w-full text-xs overflow-hidden">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />

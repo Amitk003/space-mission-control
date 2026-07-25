@@ -1,10 +1,34 @@
 @import "tailwindcss";
 
 @layer base {
+  :root {
+    --color-bg-base: #070a12;
+    --color-bg-card: #0f172a;
+    --color-bg-surface: #1e293b;
+    --color-bg-elevated: #334155;
+    --color-border-subtle: #1e293b;
+    --color-border-default: #334155;
+    --color-border-active: #06b6d4;
+    --color-text-primary: #e2e8f0;
+    --color-text-secondary: #94a3b8;
+    --color-text-muted: #64748b;
+    --color-accent: #06b6d4;
+    --color-accent-subtle: #155e75;
+    --color-success: #10b981;
+    --color-warning: #f59e0b;
+    --color-danger: #f43f5e;
+    --radius-card: 0.75rem;
+    --radius-button: 0.25rem;
+    --radius-badge: 0.25rem;
+    --shadow-glow-sm: 0 0 8px;
+    --shadow-glow-md: 0 0 12px;
+    --shadow-glow-lg: 0 0 16px;
+  }
+
   *:focus-visible {
-    outline: 2px solid #00f0ff;
+    outline: 2px solid var(--color-accent);
     outline-offset: 2px;
-    border-radius: 4px;
+    border-radius: var(--radius-button);
   }
 
   html {
@@ -21,11 +45,11 @@
     background: #050811;
   }
   ::-webkit-scrollbar-thumb {
-    background: #1e293b;
+    background: var(--color-bg-surface);
     border-radius: 3px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #00f0ff;
+    background: var(--color-accent);
   }
 
   .skip-link {
@@ -34,7 +58,7 @@
     left: 0;
     z-index: 100;
     padding: 8px 16px;
-    background: #00f0ff;
+    background: var(--color-accent);
     color: #000;
     font-size: 14px;
     font-weight: bold;
@@ -44,6 +68,47 @@
   .skip-link:focus {
     top: 0;
   }
+
+  .toast-enter {
+    animation: toast-slide-in 0.3s ease-out forwards;
+  }
+
+  .toast-exit {
+    animation: toast-slide-out 0.2s ease-in forwards;
+  }
+
+  @keyframes toast-slide-in {
+    from {
+      opacity: 0;
+      transform: translateY(-8px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes toast-slide-out {
+    from {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-8px) scale(0.95);
+    }
+  }
+}
+
+[data-high-contrast='true'] {
+  --color-bg-base: #05080f;
+  --color-bg-card: #0a0e1a;
+  --color-bg-surface: #1a2332;
+  --color-border-subtle: #334155;
+  --color-border-default: #475569;
+  --color-text-primary: #f1f5f9;
+  --color-text-secondary: #cbd5e1;
+  --color-text-muted: #94a3b8;
 }
 
 @media (prefers-reduced-motion: reduce) {

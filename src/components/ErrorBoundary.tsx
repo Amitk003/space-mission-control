@@ -26,14 +26,14 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
         return this.props.fallback;
       }
       return (
-        <div className="bg-slate-900/80 p-6 rounded-xl border border-rose-800 text-center">
-          <p className="text-rose-400 text-sm font-mono font-bold mb-2">MODULE ERROR</p>
-          <p className="text-slate-400 text-xs font-mono">
+        <div className="bg-[var(--color-bg-card)]/80 p-6 rounded-xl border border-[var(--color-danger)]/80 text-center">
+          <p className="text-[var(--color-danger)] text-sm font-mono font-bold mb-2">MODULE ERROR</p>
+          <p className="text-[var(--color-text-muted)] text-xs font-mono">
             {this.state.error?.message || 'Something went wrong'}
           </p>
           <button
             onClick={() => this.setState({ hasError: false, error: null })}
-            className="mt-3 px-3 py-1 rounded bg-slate-800 text-slate-300 text-xs font-mono hover:bg-slate-700 cursor-pointer"
+            className="mt-3 px-3 py-1 rounded bg-[var(--color-bg-surface)] text-[var(--color-text-muted)] text-xs font-mono hover:bg-[var(--color-bg-elevated)] cursor-pointer"
           >
             Retry
           </button>
