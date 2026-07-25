@@ -260,21 +260,21 @@ export const OverviewModule: React.FC = () => {
 
             <div className="grid grid-cols-2 gap-2 text-xs">
               <button
-                onClick={() => injectFault('EPS', 'WARNING')}
+                onClick={() => { if (window.confirm('Inject EPS fault? This will reduce solar power output.')) injectFault('EPS', 'WARNING'); }}
                 aria-label="Inject electrical power system fault"
                 className="px-2.5 py-1.5 rounded bg-amber-950/60 hover:bg-amber-900 border border-amber-800/80 text-amber-300 cursor-pointer transition-colors"
               >
                 Inhibit Solar Bus
               </button>
               <button
-                onClick={() => injectFault('THERMAL', 'WARNING')}
+                onClick={() => { if (window.confirm('Inject thermal drift? This will raise hull temperature.')) injectFault('THERMAL', 'WARNING'); }}
                 aria-label="Inject thermal drift fault"
                 className="px-2.5 py-1.5 rounded bg-rose-950/60 hover:bg-rose-900 border border-rose-800/80 text-rose-300 cursor-pointer transition-colors"
               >
                 Inject Thermal Drift
               </button>
               <button
-                onClick={() => injectFault('COMMS', 'CRITICAL')}
+                onClick={() => { if (window.confirm('Drop transponder? Communications will be lost.')) injectFault('COMMS', 'CRITICAL'); }}
                 aria-label="Drop transponder communications fault"
                 className="px-2.5 py-1.5 rounded bg-rose-950/60 hover:bg-rose-900 border border-rose-800/80 text-rose-300 cursor-pointer transition-colors"
               >

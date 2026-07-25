@@ -7,11 +7,27 @@ import { useMissionStore } from './store/useMissionStore';
 
 export default function App() {
   const initWorker = useMissionStore((state) => state.initWorker);
+  const setActiveModule = useMissionStore((state) => state.setActiveModule);
+  const setSimSpeed = useMissionStore((state) => state.setSimSpeed);
 
   useEffect(() => {
-    // Initialize Web Worker Telemetry Simulation Engine on app boot
     initWorker();
   }, [initWorker]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const mods: Record<string, any> = { '1': 'OVERVIEW', '2': 'TELEMETRY', '3': 'COMMS', '4': 'TIMELINE', '5': '3D_LAB' };
+      if (e.key >= '1' && e.key <= '5') {
+        setActiveModule(mods[e.key] as any);
+      }
+      if (e.key === ' ' && e.target === document.body) {
+        e.preventDefault();
+        setSimSpeed(useMissionStore.getState().simSpeed === 0 ? 1 : 0);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [setActiveModule, setSimSpeed]);
 
   return (
     <div className="min-h-screen bg-[#070a12] text-slate-100 flex flex-col font-sans selection:bg-cyan-500 selection:text-black">

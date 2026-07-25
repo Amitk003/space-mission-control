@@ -168,7 +168,11 @@ export const CommsModule: React.FC = () => {
           </div>
 
           <button
-            onClick={() => executeCommand(selectedCmd)}
+            onClick={() => {
+              if (selectedCmd === 'ENTER_SAFE_MODE' && !window.confirm('Enter Safe Mode? Non-essential systems will power down.')) return;
+              if (selectedCmd === 'EXECUTE_THRUSTER_BURST' && !window.confirm('Fire thrusters? This consumes propellant.')) return;
+              executeCommand(selectedCmd);
+            }}
             className="w-full py-2 px-3 rounded bg-cyan-950 hover:bg-cyan-900 border border-cyan-600 text-cyan-300 text-xs font-bold flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-lg"
           >
             <Send className="w-3.5 h-3.5 text-cyan-400" />

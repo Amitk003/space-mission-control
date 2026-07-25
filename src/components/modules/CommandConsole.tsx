@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { ChevronRight, Terminal } from 'lucide-react';
 import { useMissionStore } from '../../store/useMissionStore';
 
 export const CommandConsole: React.FC = () => {
   const [inputVal, setInputVal] = useState('');
+  const debounceRef = useRef<number>(0);
   const { commandLogs, executeCommand, clearFaults } = useMissionStore();
 
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
     const clean = inputVal.trim().toLowerCase();
     if (!clean) return;
+
+    const now = Date.now();
+    if (now - debounceRef.current < 500) return;
+    debounceRef.current = now;
 
     if (clean === 'help') {
       executeCommand('RUN_DIAGNOSTICS');
