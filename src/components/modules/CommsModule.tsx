@@ -94,11 +94,11 @@ export const CommsModule: React.FC = () => {
             <table className="w-full text-left text-xs font-mono">
               <thead className="bg-slate-950 text-slate-400 text-[10px] uppercase border-b border-slate-800">
                 <tr>
-                  <th className="py-2 px-3">Station Name</th>
-                  <th className="py-2 px-3">Location</th>
-                  <th className="py-2 px-3">Distance</th>
-                  <th className="py-2 px-3">Elev / Azim</th>
-                  <th className="py-2 px-3">Pass Status</th>
+                  <th scope="col" className="py-2 px-3">Station Name</th>
+                  <th scope="col" className="py-2 px-3">Location</th>
+                  <th scope="col" className="py-2 px-3">Distance</th>
+                  <th scope="col" className="py-2 px-3">Elev / Azim</th>
+                  <th scope="col" className="py-2 px-3">Pass Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800/80">
@@ -149,8 +149,9 @@ export const CommsModule: React.FC = () => {
           </h3>
 
           <div className="space-y-2">
-            <label className="text-[10px] font-mono text-slate-400 block">SELECT COMMAND PROCEDURE:</label>
+            <label htmlFor="command-select" className="text-[10px] font-mono text-slate-400 block">SELECT COMMAND PROCEDURE:</label>
             <select
+              id="command-select"
               value={selectedCmd}
               onChange={(e) => setSelectedCmd(e.target.value as CommandType)}
               className="w-full bg-slate-950 border border-slate-700 rounded px-2.5 py-1.5 text-xs font-mono text-slate-200 focus:outline-none focus:border-cyan-500 cursor-pointer"
@@ -175,7 +176,7 @@ export const CommsModule: React.FC = () => {
           </button>
 
           {/* Recent Commands Execution Audit */}
-          <div className="space-y-2 pt-3 border-t border-slate-800">
+          <div className="space-y-2 pt-3 border-t border-slate-800" aria-live="polite" aria-atomic="true">
             <span className="text-[10px] font-mono text-slate-400 block">RECENT COMMAND AUDIT TRAIL:</span>
             <div className="max-h-[160px] overflow-y-auto space-y-1.5 pr-1 font-mono text-[10px]">
               {commandLogs.map((log) => (

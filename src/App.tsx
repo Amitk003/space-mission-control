@@ -14,11 +14,13 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#070a12] text-slate-100 flex flex-col font-sans selection:bg-cyan-500 selection:text-black">
-      {/* High-Density Mission Control Header */}
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
+
       <Header />
 
-      {/* Main Viewport Body */}
-      <main className="flex-1 p-3 md:p-4 flex flex-col min-h-0 space-y-3">
+      <main id="main-content" className="flex-1 p-3 md:p-4 flex flex-col min-h-0 space-y-3">
         <ResizableLayout />
         <CommandConsole />
       </main>

@@ -1,7 +1,18 @@
 @import "tailwindcss";
 
+@layer base {
+  *:focus-visible {
+    outline: 2px solid #00f0ff;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 @layer utilities {
-  /* High-density mission control scrollbars */
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -15,5 +26,30 @@
   }
   ::-webkit-scrollbar-thumb:hover {
     background: #00f0ff;
+  }
+
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: 0;
+    z-index: 100;
+    padding: 8px 16px;
+    background: #00f0ff;
+    color: #000;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+  }
+
+  .skip-link:focus {
+    top: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

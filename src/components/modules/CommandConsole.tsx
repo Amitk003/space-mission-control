@@ -42,7 +42,7 @@ export const CommandConsole: React.FC = () => {
         <span className="text-[10px]">BAUD RATE: 115200 bps</span>
       </div>
 
-      <div className="h-[120px] overflow-y-auto space-y-1 text-[11px] pr-1">
+      <div className="h-[120px] overflow-y-auto space-y-1 text-[11px] pr-1" aria-live="polite" aria-atomic="false">
         <p className="text-slate-500">[SYSTEM] Operator Session Initialized. Socket ready.</p>
         {commandLogs.map((log) => (
           <p key={log.id} className="text-slate-300">
@@ -54,11 +54,13 @@ export const CommandConsole: React.FC = () => {
 
       <form onSubmit={handleSend} className="flex items-center gap-2 pt-2 border-t border-slate-800">
         <ChevronRight className="w-4 h-4 text-cyan-400" />
+        <label htmlFor="command-input" className="sr-only">Command input</label>
         <input
+          id="command-input"
           type="text"
           value={inputVal}
           onChange={(e) => setInputVal(e.target.value)}
-          placeholder="Type command (e.g. 'diagnostics', 'thrust', 'solar', 'safe', 'clear')..."
+          placeholder="Type command..."
           className="flex-1 bg-transparent text-cyan-200 placeholder-slate-600 focus:outline-none text-xs"
         />
         <button

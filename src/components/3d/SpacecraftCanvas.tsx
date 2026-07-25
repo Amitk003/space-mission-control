@@ -29,6 +29,8 @@ export const SpacecraftCanvas: React.FC = () => {
         <div className="flex items-center gap-1.5 bg-slate-950/80 p-1 rounded-lg border border-slate-800 backdrop-blur-md">
           <button
             onClick={() => setSpatialViewMode('SPACECRAFT')}
+            aria-label="Switch to spacecraft CAD view"
+            aria-pressed={spatialViewMode === 'SPACECRAFT'}
             className={`flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-mono transition-all cursor-pointer ${
               spatialViewMode === 'SPACECRAFT'
                 ? 'bg-cyan-950 text-cyan-300 border border-cyan-700 font-bold'
@@ -40,6 +42,8 @@ export const SpacecraftCanvas: React.FC = () => {
           </button>
           <button
             onClick={() => setSpatialViewMode('GLOBAL_ORBIT')}
+            aria-label="Switch to global orbit view"
+            aria-pressed={spatialViewMode === 'GLOBAL_ORBIT'}
             className={`flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-mono transition-all cursor-pointer ${
               spatialViewMode === 'GLOBAL_ORBIT'
                 ? 'bg-cyan-950 text-cyan-300 border border-cyan-700 font-bold'
@@ -58,8 +62,8 @@ export const SpacecraftCanvas: React.FC = () => {
             <span className="font-bold text-white">{selectedComponent.replace(/_/g, ' ')}</span>
             <button
               onClick={() => setSelectedComponent(null)}
+              aria-label="Clear component selection"
               className="ml-1 text-slate-400 hover:text-white cursor-pointer"
-              title="Clear Selection"
             >
               X
             </button>

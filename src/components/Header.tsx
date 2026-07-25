@@ -49,12 +49,14 @@ export const Header: React.FC = () => {
           <div className="flex items-center gap-2.5">
             <div className="relative flex items-center justify-center">
               <div
+                role="status"
+                aria-label={`Status: ${masterAlert}`}
                 className={`w-3 h-3 rounded-full ${
                   masterAlert === 'NOMINAL'
                     ? 'bg-emerald-400 shadow-[0_0_12px_#10b981]'
                     : masterAlert === 'WARNING'
-                    ? 'bg-amber-400 shadow-[0_0_12px_#f59e0b] animate-ping'
-                    : 'bg-rose-500 shadow-[0_0_16px_#f43f5e] animate-bounce'
+                    ? 'bg-amber-400 shadow-[0_0_12px_#f59e0b]'
+                    : 'bg-rose-500 shadow-[0_0_16px_#f43f5e]'
                 }`}
               />
             </div>
@@ -106,6 +108,8 @@ export const Header: React.FC = () => {
               <button
                 key={item.id}
                 onClick={() => setActiveModule(item.id)}
+                aria-label={`${item.label} tab`}
+                aria-current={isActive ? 'page' : undefined}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-mono tracking-wide transition-all whitespace-nowrap cursor-pointer ${
                   isActive
                     ? 'bg-cyan-950/90 text-cyan-300 border border-cyan-700/60 shadow-[0_0_10px_rgba(6,182,212,0.15)] font-semibold'
@@ -147,6 +151,8 @@ export const Header: React.FC = () => {
               <button
                 key={s}
                 onClick={() => setSimSpeed(s)}
+                aria-label={`Set simulation speed to ${s}x`}
+                aria-pressed={simSpeed === s}
                 className={`px-1.5 py-0.5 text-[10px] font-mono rounded cursor-pointer transition-colors ${
                   simSpeed === s ? 'bg-cyan-700 text-white font-bold' : 'text-slate-400 hover:text-slate-200'
                 }`}
@@ -159,12 +165,12 @@ export const Header: React.FC = () => {
           {/* Audio Mute/Unmute */}
           <button
             onClick={toggleAudioMute}
+            aria-label={isAudioMuted ? 'Unmute audio' : 'Mute audio'}
             className={`p-1.5 rounded border transition-colors cursor-pointer ${
               isAudioMuted
                 ? 'bg-slate-900 border-slate-800 text-slate-500 hover:text-slate-300'
                 : 'bg-cyan-950/60 border-cyan-800 text-cyan-400 hover:bg-cyan-900/80'
             }`}
-            title={isAudioMuted ? 'Unmute Procedural Audio' : 'Mute Audio'}
           >
             {isAudioMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
           </button>
@@ -172,8 +178,8 @@ export const Header: React.FC = () => {
           {/* Clear Injected Faults */}
           <button
             onClick={clearFaults}
+            aria-label="Reset telemetry fault overrides"
             className="flex items-center gap-1 px-2 py-1 text-[11px] font-mono bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 rounded cursor-pointer transition-colors"
-            title="Reset telemetry fault overrides"
           >
             <RotateCcw className="w-3.5 h-3.5 text-slate-400" />
             <span className="hidden sm:inline">RESET</span>
